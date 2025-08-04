@@ -1,5 +1,6 @@
 "use client";
 
+import ExitGoal from "./_components/exit-goal";
 import HeyMessage from "./_components/hey-message";
 import PickGoal from "./_components/pick-goal";
 import ReflectionButton from "./_components/reflection-button";
@@ -20,7 +21,10 @@ export default function App() {
         <div className="w-1/2 flex flex-col items-center gap-10">
           <SelectedGoal />
           <Timer />
-          <ReflectionButton/>
+          <div className="flex gap-2">
+            <ReflectionButton/>
+            <ExitGoal/>
+          </div>
         </div>
       )}
     </div>

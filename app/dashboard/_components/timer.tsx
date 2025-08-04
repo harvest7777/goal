@@ -23,6 +23,7 @@ export default function Timer({ className }: props) {
       document.title = originalTitle; // Reset title when timer is not started
       return;
     }
+    
     const worker = new Worker(new URL("./timer-worker.js", import.meta.url));
 
     const startTime = Date.now() - elapsed * 1000; // take into account the elapsed time when resuming

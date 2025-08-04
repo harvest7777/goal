@@ -8,5 +8,5 @@ self.onmessage = (e) => {
     self.postMessage({ type: "tick", elapsed });
   };
 
-  setInterval(tick, 1000);
+  setInterval(tick, 500);
 };

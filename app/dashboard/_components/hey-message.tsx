@@ -28,7 +28,7 @@ type props = {
   className?: string;
 }
 export default function HeyMessage({ className }: props) {
-  const [message, setMessage] = useState(" ");
+  const [message, setMessage] = useState("...");
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * messages.length);
