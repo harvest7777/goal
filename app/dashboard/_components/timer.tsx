@@ -1,12 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { createSession } from "../api-helpers";
+import { useGoalStore } from "../stores/useGoalsStore";
 
 let originalTitle: string | undefined;
 
@@ -15,20 +11,22 @@ type props = {
 };
 export default function Timer({ className }: props) {
   const [elapsed, setElapsed] = useState(0);
-  const [started, setStarted] = useState<boolean>(false);
-  const [open, setOpen] = useState(false);
+  const [lastStart, setLastStart] = useState<number>(0);
+  const [active, setActive] = useState<boolean>(false);
+  const selectedGoal = useGoalStore((state) => state.selectedGoal);
 
   useEffect(() => {
     if (!originalTitle) {
       originalTitle = document.title; // Store original title only once
     }
-    if (!started) {
+    if (!active) {
       document.title = originalTitle; // Reset title when timer is not started
       return;
     }
     const worker = new Worker(new URL("./timer-worker.js", import.meta.url));
 
     const startTime = Date.now() - elapsed * 1000; // take into account the elapsed time when resuming
+    setLastStart(Date.now());
     worker.postMessage({ startTime });
 
     worker.onmessage = (e) => {
@@ -45,41 +43,48 @@ export default function Timer({ className }: props) {
     };
 
     return () => worker.terminate();
-  }, [started, elapsed]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
   const hours = Math.floor(elapsed / 3600);
   const minutes = Math.floor((elapsed % 3600) / 60);
   const seconds = elapsed % 60;
 
   const handleClick = async () => {
-    if (!started) {
-      // If timer is not started, we need to create a new session
-      setStarted(true);
+    if (active) {
+      // Pause and log
+      if (!selectedGoal) {
+        console.error("No goal selected");
+        return;
+      }
+      const startString = new Date(lastStart).toISOString();
+      const endString = new Date(Date.now()).toISOString();
+      const newSession = await createSession(
+         selectedGoal.id,
+         startString,
+         endString,
+      );
+      console.log("New session created:", newSession);
+      setActive(false);
     } else {
-      setStarted(false);
-      // Prompt the user to reflect on their session
-      setOpen(true);
+      setActive(true);
     }
   };
+
+
   return (
     <div
       className={`${className} flex flex-col items-center justify-center text-2xl`}
     >
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[9999]">
-          <DialogTitle>Session Reflection</DialogTitle>
-          <p>This is a manually triggered modal!</p>
-          <DialogClose asChild>
-            <button>Close</button>
-          </DialogClose>
-        </DialogContent>
-      </Dialog>
       {hours}h {minutes}m {seconds}s
       <div className="flex gap-2 mt-2">
         <Button onClick={handleClick}>
-          {started ? "pause" : elapsed > 0 ? "resume" : "start"}
+          {active ? "pause" : elapsed > 0 ? "resume" : "start"}
         </Button>
-        <Button onClick={() => setElapsed(0)}>reset</Button>
+        <Button onClick={()=>{setElapsed(0); setActive(false);}}>
+          reset
+        </Button>
       </div>
     </div>
   );

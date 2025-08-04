@@ -9,8 +9,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "kaizen",
-  description: "a simple, calming productivity app",
+  title: "...",
+  description: "hey",
 };
 
 const architectsDaughter = Architects_Daughter({

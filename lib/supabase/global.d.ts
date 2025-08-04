@@ -5,5 +5,5 @@ type DB = Database;
 // Optional shortcuts
 type Goal = Database["public"]["Tables"]["goals"]["Row"];
 type Session = Database["public"]["Tables"]["sessions"]["Row"];
-type Win = Database["public"]["Tables"]["wins"]["Row"];
+type Reflection = Database["public"]["Tables"]["reflections"]["Row"];
 }

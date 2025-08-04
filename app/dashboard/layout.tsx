@@ -22,11 +22,9 @@ export default function AppLayout({
       }
   },[setGoals, initialized]);
   return (
-    <main>
       <AuthProvider>
         <Navbar/>
         {children}
       </AuthProvider>
-    </main>
   );
 }

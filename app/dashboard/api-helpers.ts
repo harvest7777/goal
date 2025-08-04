@@ -10,16 +10,38 @@ export const getUserUUID = async (): Promise<string> => {
     return data.user.id;
 }
 
-export const createSession = async (goalId: number, start_time: Date, end_time: Date): Promise<Session> => {
-    const { data, error } = await supabase
-        .from("sessions")
-        .insert({ goal_id: goalId, start_time: start_time.toISOString(), end_time: end_time.toISOString() })
-        .select("*")
-        .single();
-    
+export const createSession = async (goalId: number, startString: string, endString: string): Promise<Session> => {
+    const {data, error} = await supabase.from("sessions").insert(
+      {
+        start_time: startString,
+        end_time: endString,
+        goal_id: goalId,
+      }
+    )
+    .select("*")
+    .single();
+
     if (error) {
         throw new Error(`Error creating session: ${error.message}`);
     }
 
     return data as Session;
+}
+
+export const createReflection = async ( goalId: number, title: string, description: string): Promise<Reflection> => {
+    const {data, error} = await supabase.from("reflections").insert(
+      {
+        goal_id: goalId,
+        title: title,
+        description: description,
+      }
+    )
+    .select("*")
+    .single();
+
+    if (error) {
+        throw new Error(`Error creating reflection: ${error.message}`);
+    }
+
+    return data as Reflection;
 }

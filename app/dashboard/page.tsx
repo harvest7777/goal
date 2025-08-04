@@ -2,9 +2,9 @@
 
 import HeyMessage from "./_components/hey-message";
 import PickGoal from "./_components/pick-goal";
+import ReflectionButton from "./_components/reflection-button";
 import SelectedGoal from "./_components/selected-goal";
 import Timer from "./_components/timer";
-import DialogTest from "./_components/dialog-test";
 import { useGoalStore } from "./stores/useGoalsStore";
 export default function App() {
   const { selectedGoal } = useGoalStore((state) => state);
@@ -17,12 +17,12 @@ export default function App() {
         </div>
       )}
       {selectedGoal && (
-        <div className="w-1/2">
+        <div className="w-1/2 flex flex-col items-center gap-10">
           <SelectedGoal />
-          <Timer className="mt-5" />
+          <Timer />
+          <ReflectionButton/>
         </div>
       )}
-      <DialogTest />
     </div>
   );
 }
