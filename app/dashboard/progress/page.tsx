@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react"
-import { getDayArray } from "./graph-helpers"
+import { getDayArray } from "./_components/graph-helpers"
 import { getSessions } from "./api-helpers"
 import { Chart } from "./_components/daily-chart"
 import { useGoalStore } from "../stores/useGoalsStore";
