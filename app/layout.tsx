@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${architectsDaughter.className} antialiased lowercase`}>
+      <body className={`${architectsDaughter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -1,13 +1,10 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
 
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -21,19 +18,22 @@ import {
 export const description = "An area chart with axes"
 
 interface ChartProps  {
-  dayArray: number[] | null
+  dayArray: number[] | null;
+  goal: Goal;
 }
-export function Chart({ dayArray }: ChartProps) {
+export function Chart({ dayArray, goal }: ChartProps) {
   if (!dayArray) {
     return null;
   }
+  const currentHour = new Date().getHours();
+
+  let runningSum = 0;
   const chartData = (() => {
-    let runningSum = 0;
     return dayArray.map((value: number, index: number) => {
       runningSum += value;
       return {
         hour: index,
-        value: runningSum,
+        value: index <= currentHour ? runningSum : null,
       };
     });
   })();
@@ -45,13 +45,23 @@ export function Chart({ dayArray }: ChartProps) {
     },
   } satisfies ChartConfig
 
+  const formatHour = (hour: number): string => {
+    const suffix = hour < 12 ? "AM" : "PM";
+    const hour12 = hour % 12 === 0 ? 12 : hour % 12;
+    return `${hour12} ${suffix}`;
+  };
+  if (!goal.daily_commitment) {
+    console.warn("Goal does not have a daily commitment set");
+    return null;
+  }
+  const formatMinutes = (value: number): string => {
+    return `${value} m`
+  }
+
   return (
-    <Card>
+    <Card className="w-80">
       <CardHeader>
-        <CardTitle>Area Chart - Axes</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle>{runningSum >= goal.daily_commitment && "✔"} {goal.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer  config={chartConfig}>
@@ -59,9 +69,8 @@ export function Chart({ dayArray }: ChartProps) {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: -20,
-              right: 12,
-              bottom: 10,
+              left: -10,
+              right: 0,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -70,6 +79,8 @@ export function Chart({ dayArray }: ChartProps) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              interval={4}
+              tickFormatter={formatHour}
             >
 
             </XAxis>
@@ -77,11 +88,17 @@ export function Chart({ dayArray }: ChartProps) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickCount={3}
-              domain={[0,120]}
-              tickFormatter={(value) => value.toString() + "m"}
+              tickCount={4}
+              domain={[0, runningSum > goal.daily_commitment ? "auto" : goal.daily_commitment]}
+              tickFormatter={formatMinutes}
             >
             </YAxis>
+            <ReferenceLine
+              y={goal.daily_commitment}
+              stroke="var(--color-value)"
+              strokeDasharray="4 4"
+              strokeWidth={1}
+            />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
               <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
@@ -108,18 +125,6 @@ export function Chart({ dayArray }: ChartProps) {
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   )
 }

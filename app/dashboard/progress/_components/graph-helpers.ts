@@ -30,10 +30,3 @@ export const getDayArray = (sessions: Session[]) => {
 
     return result;
 }
-
-export const dayArrayToChartConfig = (dayArray: number[]) => {
-    return dayArray.map((value, index) => ({
-        hour: `${index}:00`,
-        value: value,
-    }));
-}

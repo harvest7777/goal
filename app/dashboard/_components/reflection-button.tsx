@@ -83,7 +83,7 @@ export default function ReflectionButton() {
             </div>
             {/* submit button */}
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? "creating..." : "create goal"}
+              {isSubmitting ? "submitting..." : "submit"}
             </Button>
           </form>
         </DialogContent>

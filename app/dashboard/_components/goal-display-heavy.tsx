@@ -13,7 +13,6 @@ export default function GoalDisplayHeavy({ goal, className }: Props) {
   const [open, setOpen] = useState(false);
   const setSelectedGoal = useGoalStore((state) => state.setSelectedGoal);
   const handleSelect = () => {
-    console.log("hi")
     setSelectedGoal(goal);
   }
   return (

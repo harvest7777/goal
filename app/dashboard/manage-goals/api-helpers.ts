@@ -1,11 +1,11 @@
 import { getUserUUID } from "../api-helpers";
 import supabase from "@/lib/supabase/supabase"
 
-export const createGoal = async(name: string, motivator: string|null, hour_commitment: number ): Promise<Goal> => {
+export const createGoal = async(name: string, motivator: string|null, weekly_commitment: number ): Promise<Goal> => {
     const owner = await getUserUUID();
     const { data, error } = await supabase
         .from("goals")
-        .insert({ name, motivator, hour_commitment, owner })
+        .insert({ name, motivator, weekly_commitment, owner })
         .select("*")
         .single();
     

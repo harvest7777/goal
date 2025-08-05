@@ -12,7 +12,8 @@ import { useGoalStore } from "../../stores/useGoalsStore";
 const formSchema = z.object({
   name: z.string().min(1, { message: "goal name is required" }),
   motivator: z.string().nullable(),
-  hour_commitment: z.number().min(1, { message: "c'mon... you can commit more than that!" }),
+  daily_commitment: z.number().min(1, { message: "daily commitment must be at least 1 minute" }),
+  weekly_commitment: z.number().min(1, { message: "c'mon... you can commit more than that!" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -39,7 +40,7 @@ export default function NewGoalForm({ className }: Props) {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const newGoal = await createGoal(values.name, values.motivator, values.hour_commitment);
+      const newGoal = await createGoal(values.name, values.motivator, values.weekly_commitment);
       addGoal(newGoal);
       reset();
     } catch (error) {
@@ -79,13 +80,25 @@ export default function NewGoalForm({ className }: Props) {
         <Input
           type="number"
           placeholder="0"
-          {...register("hour_commitment", { valueAsNumber: true })}
+          {...register("weekly_commitment", { valueAsNumber: true })}
         />
-        {isSubmitted && errors.hour_commitment && (
-          <p className="text-red-500 text-sm">{errors.hour_commitment.message}</p>
+        {isSubmitted && errors.weekly_commitment && (
+          <p className="text-red-500 text-sm">{errors.weekly_commitment.message}</p>
         )}
       </div>
 
+      {/* daily time commitment */}
+      <div>
+        <label className="block text-sm font-medium mb-1">dailycommitment</label>
+        <Input
+          type="number"
+          placeholder="0"
+          {...register("daily_commitment", { valueAsNumber: true })}
+        />
+        {isSubmitted && errors.daily_commitment && (
+          <p className="text-red-500 text-sm">{errors.daily_commitment.message}</p>
+        )}
+      </div>
       {/* submit button */}
       <Button type="submit" disabled={isSubmitting} className="w-full">
         {isSubmitting ? "creating..." : "create goal"}
