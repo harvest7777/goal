@@ -58,6 +58,9 @@ export function Chart({ dayArray, goal }: ChartProps) {
     return `${value} m`
   }
 
+  if (goal.id === 8) {
+    console.log(dayArray);
+  }
   return (
     <Card className="w-80">
       <CardHeader>
