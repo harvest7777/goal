@@ -12,10 +12,11 @@ export const getDayArray = (sessions: Session[]) => {
       // case 1 previous session rolled over into today
       if (sessionStart.getTime() < dayStart.getTime()) {
         const loopEnd = sessionEnd.getHours();
+        console.log(loopEnd)
         for (let hour = 0; hour < loopEnd; hour++) {
           result[hour] += 60;
         }
-        result[loopEnd] += dayEnd.getMinutes() + dayEnd.getSeconds() / 60;
+        result[loopEnd] += sessionEnd.getMinutes() + sessionEnd.getSeconds() / 60;
         return;
       }
 
