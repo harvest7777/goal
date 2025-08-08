@@ -18,32 +18,32 @@ import {
 export const description = "An area chart with axes"
 
 interface ChartProps  {
-  weekArray: number[] | null;
+  dayArray: number[] | null;
   goal: Goal;
 }
-export function WeeklyChart({ weekArray, goal }: ChartProps) {
-  if (!weekArray || !goal.weekly_commitment) {
+export function DailyChartRender({ dayArray, goal }: ChartProps) {
+  if (!dayArray || !goal.daily_commitment) {
     return null;
   }
-  const currentDay = new Date().getDay();
+  const currentHour = new Date().getHours();
 
   let runningSum = 0;
 
   const chartData = (() => {
-    return weekArray.map((value: number, index: number) => {
-      runningSum += value/60000;
+    return dayArray.map((value: number, index: number) => {
+      runningSum += value;
       return {
         hour: index,
-        value: index <= currentDay ? runningSum : null,
+        value: index <= currentHour ? runningSum : null,
       };
     });
   })();
 
 
-  const weeklyChartConfig = {
+  const chartConfig = {
     value: {
       label: "minutes",
-      color: "hsl(var(--chart-1))"
+      color: "hsl(var(--chart-4))"
     },
   } satisfies ChartConfig
 
@@ -51,10 +51,10 @@ export function WeeklyChart({ weekArray, goal }: ChartProps) {
   return (
     <Card className="w-80">
       <CardHeader>
-        <CardTitle>{runningSum >= goal.weekly_commitment && "✔"} {goal.name}</CardTitle>
+        <CardTitle>{runningSum >= goal.daily_commitment && "✔"} {goal.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer  config={weeklyChartConfig}>
+        <ChartContainer  config={chartConfig}>
           <AreaChart
             accessibilityLayer
             data={chartData}
@@ -69,7 +69,8 @@ export function WeeklyChart({ weekArray, goal }: ChartProps) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={formatDay}
+              interval={4}
+              tickFormatter={formatHour}
             >
 
             </XAxis>
@@ -78,19 +79,19 @@ export function WeeklyChart({ weekArray, goal }: ChartProps) {
               axisLine={false}
               tickMargin={8}
               tickCount={4}
-              domain={[0, runningSum > goal.weekly_commitment ? "auto" : goal.weekly_commitment]}
+              domain={[0, runningSum > goal.daily_commitment ? "auto" : goal.daily_commitment]}
               tickFormatter={formatMinutes}
             >
             </YAxis>
             <ReferenceLine
-              y={goal.weekly_commitment}
+              y={goal.daily_commitment}
               stroke="var(--color-value)"
               strokeDasharray="4 4"
               strokeWidth={1}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
-              <linearGradient id="weeklyFillValue" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--color-value)"
@@ -106,7 +107,7 @@ export function WeeklyChart({ weekArray, goal }: ChartProps) {
             <Area
               dataKey="value"
               type="monotone"
-              fill="url(#weeklyFillValue)"
+              fill="url(#fillValue)"
               fillOpacity={0.4}
               stroke="var(--color-value)"
               stackId="a"
@@ -118,9 +119,10 @@ export function WeeklyChart({ weekArray, goal }: ChartProps) {
   )
 }
 
-const formatDay = (day: number): string => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  return days[day];
+const formatHour = (hour: number): string => {
+  const suffix = hour < 12 ? "AM" : "PM";
+  const hour12 = hour % 12 === 0 ? 12 : hour % 12;
+  return `${hour12} ${suffix}`;
 };
 
 const formatMinutes = (value: number): string => {
