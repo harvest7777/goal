@@ -26,7 +26,6 @@ export default function GoalsList({ className }: props) {
             return;
         }
         if (data) {
-            console.log(data)
             updateGoal(data);
         }
     }

@@ -41,7 +41,6 @@ export default function TestGoals() {
                 current.setHours(hour + 1, 0, 0, 0);
             }
         }
-        console.log("Hourly breakdown:", result);
 
         return result;
     }

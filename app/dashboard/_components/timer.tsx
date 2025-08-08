@@ -41,9 +41,15 @@ export default function Timer({ className }: props) {
       if (document.visibilityState === "visible") {
         setElapsed(elapsed);
       }
-    };
+      };
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault(); // Required for some browsers
+    });
 
-    return () => worker.terminate();
+    return () => {
+      worker.terminate();
+      window.removeEventListener("beforeunload", () => {});
+    }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
@@ -61,12 +67,11 @@ export default function Timer({ className }: props) {
       }
       const startString = new Date(lastStart).toISOString();
       const endString = new Date(Date.now()).toISOString();
-      const newSession = await createSession(
+      await createSession(
          selectedGoal.id,
          startString,
          endString,
       );
-      console.log("New session created:", newSession);
       setActive(false);
     } else {
       setActive(true);

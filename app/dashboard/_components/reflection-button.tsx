@@ -31,8 +31,7 @@ export default function ReflectionButton() {
         console.error("No selected goal to create reflection for");
         return;
       }
-      const newReflection = await createReflection(selectedGoal.id, values.title, values.description);
-      console.log("Reflection created:", newReflection);
+      await createReflection(selectedGoal.id, values.title, values.description);
       setOpen(false);
       reset();
     } catch (error) {

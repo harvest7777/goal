@@ -12,7 +12,6 @@ export const getDayArray = (sessions: Session[]) => {
       // case 1 previous session rolled over into today
       if (sessionStart.getTime() < dayStart.getTime()) {
         const loopEnd = sessionEnd.getHours();
-        console.log(loopEnd)
         for (let hour = 0; hour < loopEnd; hour++) {
           result[hour] += 60;
         }
@@ -23,7 +22,6 @@ export const getDayArray = (sessions: Session[]) => {
       // case 2 session rolled into a new day
       if (sessionEnd.getTime() > dayEnd.getTime()) {
         const loopStart = sessionStart.getHours()+1;
-        console.log(loopStart)
         for (let hour = loopStart; hour < 24; hour++) {
           result[hour] += 60;
         }
@@ -59,7 +57,6 @@ export const getDayArray = (sessions: Session[]) => {
       return;
 
     });
-    console.log(dayStart, dayEnd)
 
     return result;
 }
