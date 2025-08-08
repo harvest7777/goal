@@ -10,6 +10,7 @@ interface GoalActions {
   addGoal: (goal: Goal) => void;
   deleteGoal: (id: number) => void;
   setGoals: (goals: Goal[] | null) => void;
+  updateGoal: (goal: Goal) => void;
   setSelectedGoal: (goal: Goal | null) => void;
   markInitialized: () => void;
 }
@@ -30,7 +31,10 @@ export const useGoalStore = create<GoalStore>((set) => ({
         set((state) => ({
         goals: state.goals ? state.goals.filter((g) => g.id !== id) : null,
         })),
-
+    updateGoal: (goal) =>
+        set((state) => ({
+            goals: state.goals ? state.goals.map((g) => (g.id === goal.id ? goal : g)) : null,
+        })),
     setGoals: (goals) => set({ goals }),
     setSelectedGoal: (goal) => set({ selectedGoal: goal }),
     markInitialized: () => set({ initialized: true }),

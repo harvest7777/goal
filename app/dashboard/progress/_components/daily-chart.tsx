@@ -41,7 +41,7 @@ export function Chart({ dayArray, goal }: ChartProps) {
   const chartConfig = {
     value: {
       label: "minutes",
-      color: "hsl(var(--chart-2))",
+      color: "hsl(var(--chart-4))",
     },
   } satisfies ChartConfig
 

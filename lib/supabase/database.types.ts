@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           daily_commitment: number | null
           id: number
+          is_focused: boolean
           motivator: string | null
           name: string
           owner: string | null
@@ -28,6 +29,7 @@ export type Database = {
           created_at?: string
           daily_commitment?: number | null
           id?: number
+          is_focused?: boolean
           motivator?: string | null
           name: string
           owner?: string | null
@@ -37,6 +39,7 @@ export type Database = {
           created_at?: string
           daily_commitment?: number | null
           id?: number
+          is_focused?: boolean
           motivator?: string | null
           name?: string
           owner?: string | null
@@ -117,6 +120,18 @@ export type Database = {
         Args: { goal_id: number }
         Returns: string
       }
+      get_non_cutoff_total: {
+        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Returns: number
+      }
+      get_roll_into_new_day_total: {
+        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Returns: number
+      }
+      get_roll_out_of_day_total: {
+        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Returns: number
+      }
       get_sessions_from_range: {
         Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
         Returns: {
@@ -125,6 +140,10 @@ export type Database = {
           start_time: string
           end_time: string
         }[]
+      }
+      get_total_time_spent_from_range: {
+        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Returns: number
       }
     }
     Enums: {

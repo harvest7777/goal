@@ -17,7 +17,7 @@ export default function GoalDisplayHeavy({ goal, className }: Props) {
   }
   return (
     <div
-      className={`${className} rounded-sm outline outline-1 h-min outline-foreground p-2 relative cursor-pointer hover:outline-2 `}
+      className={`${className} rounded-sm outline outline-1 h-min ${goal.is_focused ? 'outline-foreground' : 'outline-muted-foreground text-muted-foreground'} p-2 relative cursor-pointer hover:outline-2 `}
       onClick={(()=> handleSelect())}
     >
       {/* header */}

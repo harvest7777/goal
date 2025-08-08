@@ -43,7 +43,7 @@ export default function ProgressPage() {
         <h1>lets see how we are doing</h1>
         <h2>today</h2>
         <div className="flex flex-wrap gap-5 justify-center">
-            {goals.map((goal) => (
+            {goals.filter((goal)=> goal.is_focused).map((goal) => (
                 goal.daily_commitment && <Chart dayArray={goalToDayArray[goal.id]} goal={goal} key={goal.id}/>
             ))}
         </div>
