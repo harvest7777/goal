@@ -5,7 +5,7 @@
 import { useState } from "react";
 import { useGoalStore } from "../stores/useGoalsStore";
 import { ChooseProgressDisplay } from "./_components/choose-display";
-import DisplayWeeklyProgress from "./_components/dispaly-weekly-progress";
+import DisplayWeeklyProgress from "./_components/display-weekly-progress";
 import DisplayDailyProgress from "./_components/display-daily-progress";
 
 export default function ProgressPage() {

@@ -7,7 +7,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DailyChartRender } from "./daily-chart-render";
+import { RenderDailyChart } from "./render-daily-chart";
 import { getSessions } from "../api-helpers";
 import { getDayArray } from "./graph-helpers";
 import supabase from "@/lib/supabase/supabase";
@@ -36,6 +36,10 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
                     return [goal.id, dayArray]; 
                 })
             );
+
+            const goalMap = Object.fromEntries(goalSessionPairs);
+            setGoalToDayArray(goalMap);
+
             const { data, error } = await supabase.rpc('get_total_time_spent_from_range', {
                 p_start_time: startDate.toISOString(),
                 p_end_time: endDate.toISOString()
@@ -46,13 +50,11 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
                 return;
             }
             setTotalTimeMs(data);
-            const goalMap = Object.fromEntries(goalSessionPairs);
-            setGoalToDayArray(goalMap);
         }
         init();
     },[])
 
-    if (!goalToDayArray) {
+    if (!goalToDayArray || totalTimeMs === null) {
         return null;
     }
     return (
@@ -60,7 +62,7 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
             <h2>{`total time invested today: ${prettifyMs(totalTimeMs)}`}</h2>
             <div className={`flex gap-5 items-center align-middle justify-center flex-wrap`}>
                 {goals.map((goal) => (
-                    goal.daily_commitment && <DailyChartRender dayArray={goalToDayArray[goal.id]} goal={goal} key={goal.id}/>
+                    goal.daily_commitment && <RenderDailyChart dayArray={goalToDayArray[goal.id]} goal={goal} key={goal.id}/>
                 ))}
             </div>
         </div>

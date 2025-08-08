@@ -21,7 +21,7 @@ interface ChartProps  {
   dayArray: number[] | null;
   goal: Goal;
 }
-export function DailyChartRender({ dayArray, goal }: ChartProps) {
+export function RenderDailyChart({ dayArray, goal }: ChartProps) {
   if (!dayArray || !goal.daily_commitment) {
     return null;
   }

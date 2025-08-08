@@ -54,7 +54,7 @@ export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className
         init();
     },[])
 
-    if (!goalToWeekArray) {
+    if (!goalToWeekArray || totalTimeMs === null) {
         return null;
     }
     return (
