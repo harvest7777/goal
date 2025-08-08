@@ -7,9 +7,8 @@ export default function Navbar() {
                     <Link href="/" className="hover:font-semibold">dashboard</Link>
                 </div>
                 <div className="flex space-x-8">
-                    <Link href="/dashboard/reflect" className="hover:font-semibold">reflect</Link>
+                    <Link href="/dashboard/goals" className="hover:font-semibold">goals</Link>
                     <Link href="/dashboard/progress" className="hover:font-semibold">progress</Link>
-                    <Link href="/dashboard/manage-goals" className="hover:font-semibold">goals</Link>
                 </div>
             </div>
         </nav>
