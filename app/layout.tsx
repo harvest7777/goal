@@ -10,7 +10,10 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "...",
-  description: "hey",
+  description: "please",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 const architectsDaughter = Architects_Daughter({

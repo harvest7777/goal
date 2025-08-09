@@ -11,6 +11,7 @@ import { RenderDailyChart } from "./render-daily-chart";
 import { getSessions } from "../api-helpers";
 import { getDayArray } from "./graph-helpers";
 import supabase from "@/lib/supabase/supabase";
+import Spinner from "@/components/ui/loading-spinner";
 
 interface DailyChartProps {
     goalsToDisplay: Goal[];
@@ -55,7 +56,7 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
     },[])
 
     if (!goalToDayArray || totalTimeMs === null) {
-        return null;
+        return <Spinner className="mt-10"/>
     }
     return (
         <div className={`${className} flex flex-col justify-center align-middle items-center gap-5`}>

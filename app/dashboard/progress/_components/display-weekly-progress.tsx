@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { getWeeklySessions } from "../api-helpers";
 import { RenderWeeklyChart } from "./render-weekly-chart";
 import supabase from "@/lib/supabase/supabase";
+import Spinner from "@/components/ui/loading-spinner";
 
 interface WeeklyChartProps {
     goalsToDisplay: Goal[];
@@ -55,7 +56,7 @@ export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className
     },[])
 
     if (!goalToWeekArray || totalTimeMs === null) {
-        return null;
+        return <Spinner className="mt-10"/>
     }
     return (
         <div className={`${className} flex flex-col justify-center align-middle items-center gap-5`}>
