@@ -51,7 +51,7 @@ export function RenderWeeklyChart({ weekArray, totalMs, goal }: ChartProps) {
 
 
   return (
-    <Card className="w-80">
+    <Card className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>
       <CardHeader>
         <CardTitle className="flex justify-between">
           <span className="w-3/5 line-clamp-1">{runningSum >= goal.weekly_commitment && "✔"} {goal.name}</span>

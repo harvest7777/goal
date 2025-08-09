@@ -51,11 +51,12 @@ export function RenderDailyChart({ dayArray, msSpent, goal }: ChartProps) {
 
 
   return (
-    <Card className="w-80">
+    <Card className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>
       <CardHeader>
         <CardTitle className="flex justify-between">
           <span className="w-3/5 line-clamp-1">{runningSum >= goal.daily_commitment && "✔"} {goal.name}</span>
-          <span className="text-muted-foreground font-normal">{prettifyMs(msSpent)}</span></CardTitle>
+          <span className="text-muted-foreground font-normal">{prettifyMs(msSpent)}</span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer  config={chartConfig}>

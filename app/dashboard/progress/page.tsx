@@ -22,7 +22,7 @@ export default function ProgressPage() {
             <ChooseProgressDisplay display={display} setDisplay={setDisplay} /> 
         </div>
         {display === "today" && 
-            <DisplayDailyProgress className="w-full" goalsToDisplay={goals}/>
+           <DisplayDailyProgress className="w-full" goalsToDisplay={goals} />
         }
         {
             display === "weekly" && 
