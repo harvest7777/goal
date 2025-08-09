@@ -7,6 +7,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { prettifyMs } from "./graph-helpers";
 import { RenderDailyChart } from "./render-daily-chart";
 import { getSessions } from "../api-helpers";
 import { getDayArray } from "./graph-helpers";
@@ -20,6 +21,7 @@ interface DailyChartProps {
 
 export default function DisplayDailyProgress({ goalsToDisplay: goals, className }: DailyChartProps) {
     const [goalToDayArray, setGoalToDayArray] = useState<Record<number, number[]> | null>(null);
+    const [goalToMs, setGoalToMs] = useState<Record<number, number> | null>(null);
     const [totalTimeMs, setTotalTimeMs] = useState<number | null>(null);
 
     const startDate = new Date();
@@ -38,8 +40,23 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
                 })
             );
 
-            const goalMap = Object.fromEntries(goalSessionPairs);
-            setGoalToDayArray(goalMap);
+            setGoalToDayArray(Object.fromEntries(goalSessionPairs));
+
+            const goalTimePairs = await Promise.all(
+                goals.map(async (goal) => {
+                    const { data, error } = await supabase.rpc('get_total_time_spent_from_range', {
+                        p_goal_id: goal.id,
+                        p_start_time: startDate.toISOString(),
+                        p_end_time: endDate.toISOString()
+                    })
+                    if (error) {
+                        console.error("Error fetching total time spent:", error);
+                    }
+                    return [goal.id, data]; 
+                })
+            );
+            const goalTimePairsMap = Object.fromEntries(goalTimePairs);
+            setGoalToMs(goalTimePairsMap);
 
             const { data, error } = await supabase.rpc('get_total_time_spent_from_range', {
                 p_start_time: startDate.toISOString(),
@@ -55,24 +72,20 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
         init();
     },[])
 
-    if (!goalToDayArray || totalTimeMs === null) {
+    if (!goalToDayArray || !goalToMs || totalTimeMs === null) {
         return <Spinner className="mt-10"/>
     }
+    console.log(goalToMs)
     return (
         <div className={`${className} flex flex-col justify-center align-middle items-center gap-5`}>
             <h2>{`total time invested today: ${prettifyMs(totalTimeMs)}`}</h2>
             <div className={`flex gap-5 items-center align-middle justify-center flex-wrap`}>
                 {goals.map((goal) => (
-                    goal.daily_commitment && <RenderDailyChart dayArray={goalToDayArray[goal.id]} goal={goal} key={goal.id}/>
+                    <div key={goal.id}>
+                    <RenderDailyChart msSpent={goalToMs[goal.id]} dayArray={goalToDayArray[goal.id]} goal={goal}/>
+                    </div>
                 ))}
             </div>
         </div>
     )
 }
-
-const prettifyMs = (ms: number | null) => {
-    if (ms === null) return "N/A";
-    const hours = Math.floor(ms / 3600000);
-    const minutes = Math.floor((ms % 3600000) / 60000);
-    return `${hours}h ${minutes}m`;
-};

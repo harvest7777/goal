@@ -1,6 +1,7 @@
 "use client"
 
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
+import { prettifyMs } from "./graph-helpers"
 
 import {
   Card,
@@ -19,10 +20,11 @@ export const description = "An area chart with axes"
 
 interface ChartProps  {
   dayArray: number[] | null;
+  msSpent: number | null;
   goal: Goal;
 }
-export function RenderDailyChart({ dayArray, goal }: ChartProps) {
-  if (!dayArray || !goal.daily_commitment) {
+export function RenderDailyChart({ dayArray, msSpent, goal }: ChartProps) {
+  if (!dayArray || !goal.daily_commitment || msSpent === null) {
     return null;
   }
   const currentHour = new Date().getHours();
@@ -43,7 +45,7 @@ export function RenderDailyChart({ dayArray, goal }: ChartProps) {
   const chartConfig = {
     value: {
       label: "minutes",
-      color: "hsl(var(--chart-4))"
+      color: "hsl(var(--chart-3))"
     },
   } satisfies ChartConfig
 
@@ -51,7 +53,9 @@ export function RenderDailyChart({ dayArray, goal }: ChartProps) {
   return (
     <Card className="w-80">
       <CardHeader>
-        <CardTitle>{runningSum >= goal.daily_commitment && "✔"} {goal.name}</CardTitle>
+        <CardTitle className="flex justify-between">
+          <span className="w-3/5 line-clamp-1">{runningSum >= goal.daily_commitment && "✔"} {goal.name}</span>
+          <span className="text-muted-foreground font-normal">{prettifyMs(msSpent)}</span></CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer  config={chartConfig}>

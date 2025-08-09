@@ -14,14 +14,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { prettifyMs } from "./graph-helpers"
 
 export const description = "An area chart with axes"
 
 interface ChartProps  {
   weekArray: number[] | null;
+  totalMs: number | null;
   goal: Goal;
 }
-export function RenderWeeklyChart({ weekArray, goal }: ChartProps) {
+export function RenderWeeklyChart({ weekArray, totalMs, goal }: ChartProps) {
   if (!weekArray || !goal.weekly_commitment) {
     return null;
   }
@@ -43,7 +45,7 @@ export function RenderWeeklyChart({ weekArray, goal }: ChartProps) {
   const weeklyChartConfig = {
     value: {
       label: "minutes",
-      color: "hsl(var(--chart-1))"
+      color: "hsl(var(--chart-3))"
     },
   } satisfies ChartConfig
 
@@ -51,7 +53,10 @@ export function RenderWeeklyChart({ weekArray, goal }: ChartProps) {
   return (
     <Card className="w-80">
       <CardHeader>
-        <CardTitle>{runningSum >= goal.weekly_commitment && "✔"} {goal.name}</CardTitle>
+        <CardTitle className="flex justify-between">
+          <span className="w-3/5 line-clamp-1">{runningSum >= goal.weekly_commitment && "✔"} {goal.name}</span>
+          <span className="text-muted-foreground font-normal">{prettifyMs(totalMs)}</span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer  config={weeklyChartConfig}>

@@ -20,6 +20,7 @@ interface WeeklyChartProps {
 export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className }: WeeklyChartProps) {
     const [goalToWeekArray, setGoalToWeekArray] = useState<Record<number, number[]> | null>(null);
     const [totalTimeMs, setTotalTimeMs] = useState<number | null>(null);
+    const [goalToMs, setGoalToMs] = useState<Record<number, number> | null>(null);
 
     const weekDayStart = new Date();
     weekDayStart.setDate(weekDayStart.getDate() - weekDayStart.getDay());
@@ -42,6 +43,21 @@ export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className
 
             const weekEnd = new Date(weekDayEnd);
             weekEnd.setDate(weekEnd.getDate() + 6);
+
+            const goalTimePairs = await Promise.all(
+                goals.map(async (goal) => {
+                    const { data, error } = await supabase.rpc('get_total_time_spent_from_range', {
+                        p_goal_id: goal.id,
+                        p_start_time: weekDayStart.toISOString(),
+                        p_end_time: weekEnd.toISOString()
+                    })
+                    if (error) {
+                        console.error("Error fetching total time spent:", error);
+                    }
+                    return [goal.id, data]; 
+                })
+            );
+            setGoalToMs(Object.fromEntries(goalTimePairs));
             const { data, error } = await supabase.rpc('get_total_time_spent_from_range', {
                 p_start_time: weekDayStart.toISOString(),
                 p_end_time: weekEnd.toISOString()
@@ -55,7 +71,7 @@ export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className
         init();
     },[])
 
-    if (!goalToWeekArray || totalTimeMs === null) {
+    if (!goalToWeekArray || !goalToMs ||totalTimeMs === null) {
         return <Spinner className="mt-10"/>
     }
     return (
@@ -63,7 +79,7 @@ export default function DisplayWeeklyProgress({ goalsToDisplay: goals, className
             <h2>{`total time invested this week: ${prettifyMs(totalTimeMs)}`}</h2>
             <div className={`${className} flex gap-5 items-center align-middle justify-center flex-wrap`}>
                 {goals.map((goal) => (
-                    goal.daily_commitment && <RenderWeeklyChart weekArray={goalToWeekArray[goal.id]} goal={goal} key={goal.id}/>
+                   <RenderWeeklyChart totalMs={goalToMs[goal.id]} weekArray={goalToWeekArray[goal.id]} goal={goal} key={goal.id}/>
                 ))}
             </div>
         </div>
