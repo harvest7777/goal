@@ -27,7 +27,7 @@ export function RenderWeeklyChart({ weekArray, totalMs, goal }: ChartProps) {
   if (!weekArray || !goal.weekly_commitment) {
     return null;
   }
-  const currentDay = new Date().getDay();
+  const currentDay = new Date().getDay()+1;
 
   let runningSum = 0;
 
