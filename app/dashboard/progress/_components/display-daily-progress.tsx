@@ -75,7 +75,7 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
     if (!goalToDayArray || !goalToMs || totalTimeMs === null) {
         return <Spinner className="mt-10"/>
     }
-    console.log(goalToMs)
+
     return (
         <div className={`${className} flex flex-col justify-center align-middle items-center gap-5`}>
             <h2>{`total time invested today: ${prettifyMs(totalTimeMs)}`}</h2>

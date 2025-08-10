@@ -27,7 +27,7 @@ export function RenderDailyChart({ dayArray, msSpent, goal }: ChartProps) {
   if (!dayArray || !goal.daily_commitment || msSpent === null) {
     return null;
   }
-  const currentHour = new Date().getHours();
+  const currentHour = new Date().getHours()+1;
 
   let runningSum = 0;
 
@@ -48,7 +48,6 @@ export function RenderDailyChart({ dayArray, msSpent, goal }: ChartProps) {
       color: "hsl(var(--chart-3))"
     },
   } satisfies ChartConfig
-
 
   return (
     <Card className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>
