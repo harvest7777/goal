@@ -22,14 +22,14 @@ export function ChooseProgressDisplay({ display, setDisplay }: ChooseProgressDis
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">lets see how we are doing {display}</Button>
+        <Button variant="outline">{display} view</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>progress display</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={display} onValueChange={setDisplay}>
-          <DropdownMenuRadioItem value="today">today</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="weekly">weekly</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="day">day</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="week">week</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

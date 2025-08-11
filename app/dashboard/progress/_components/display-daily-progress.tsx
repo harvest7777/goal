@@ -16,18 +16,19 @@ import Spinner from "@/components/ui/loading-spinner";
 
 interface DailyChartProps {
     goalsToDisplay: Goal[];
+    date: Date;
     className?: string;
 }
 
-export default function DisplayDailyProgress({ goalsToDisplay: goals, className }: DailyChartProps) {
+export default function DisplayDailyProgress({ goalsToDisplay: goals, className, date}: DailyChartProps) {
     const [goalToDayArray, setGoalToDayArray] = useState<Record<number, number[]> | null>(null);
     const [goalToMs, setGoalToMs] = useState<Record<number, number> | null>(null);
     const [totalTimeMs, setTotalTimeMs] = useState<number | null>(null);
 
-    const startDate = new Date();
+    const startDate = new Date(date);
     startDate.setHours(0, 0, 0, 0);
 
-    const endDate = new Date();
+    const endDate = new Date(date);
     endDate.setHours(23, 59, 59, 999);
 
     useEffect(()=>{
@@ -70,7 +71,7 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
             setTotalTimeMs(data);
         }
         init();
-    },[])
+    },[date])
 
     if (!goalToDayArray || !goalToMs || totalTimeMs === null) {
         return <Spinner className="mt-10"/>
@@ -82,7 +83,7 @@ export default function DisplayDailyProgress({ goalsToDisplay: goals, className 
             <div className={`flex gap-5 items-center align-middle justify-center flex-wrap`}>
                 {goals.map((goal) => (
                     <div key={goal.id}>
-                    <RenderDailyChart msSpent={goalToMs[goal.id]} dayArray={goalToDayArray[goal.id]} goal={goal}/>
+                    <RenderDailyChart date={date} msSpent={goalToMs[goal.id]} dayArray={goalToDayArray[goal.id]} goal={goal}/>
                     </div>
                 ))}
             </div>

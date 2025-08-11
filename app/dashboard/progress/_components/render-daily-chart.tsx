@@ -21,12 +21,14 @@ export const description = "An area chart with axes"
 interface ChartProps  {
   dayArray: number[] | null;
   msSpent: number | null;
+  date: Date;
   goal: Goal;
 }
-export function RenderDailyChart({ dayArray, msSpent, goal }: ChartProps) {
+export function RenderDailyChart({ dayArray, msSpent, goal}: ChartProps) {
   if (!dayArray || !goal.daily_commitment || msSpent === null) {
     return null;
   }
+
   const currentHour = new Date().getHours()+1;
 
   let runningSum = 0;
