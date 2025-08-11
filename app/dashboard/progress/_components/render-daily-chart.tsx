@@ -24,12 +24,18 @@ interface ChartProps  {
   date: Date;
   goal: Goal;
 }
-export function RenderDailyChart({ dayArray, msSpent, goal}: ChartProps) {
+export function RenderDailyChart({ dayArray, msSpent, goal,date}: ChartProps) {
   if (!dayArray || !goal.daily_commitment || msSpent === null) {
     return null;
   }
 
-  const currentHour = new Date().getHours()+1;
+  const now = new Date();
+  const isSameDay =
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate();
+
+  const hourLimit = isSameDay ? now.getHours() + 1 : 9999;
 
   let runningSum = 0;
 
@@ -38,7 +44,7 @@ export function RenderDailyChart({ dayArray, msSpent, goal}: ChartProps) {
       runningSum += value;
       return {
         hour: index,
-        value: index <= currentHour ? runningSum : null,
+        value: index <= hourLimit ? runningSum : null,
       };
     });
   })();

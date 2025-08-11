@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useState } from "react";
 
 interface ChooseDayProps {
   date: Date | undefined;
@@ -15,13 +16,14 @@ interface ChooseDayProps {
 
 export function ChooseDay({ date, setDate }: ChooseDayProps) {
   let day = date?.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).toLowerCase();
+  const [open, setOpen] = useState(false);
 
   if (isToday(date)) {
     day = "today";
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline">{day}</Button>
       </PopoverTrigger>
@@ -29,7 +31,7 @@ export function ChooseDay({ date, setDate }: ChooseDayProps) {
       <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(date) => {setDate(date); setOpen(false)}}
           className="rounded-lg"
         />
       </PopoverContent>
