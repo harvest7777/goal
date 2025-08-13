@@ -1,5 +1,4 @@
 "use client";
-import { createGoal } from "../api-helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useGoalStore } from "../../stores/useGoalsStore";
+import supabase from "@/lib/supabase/supabase";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "goal name is required" }),
@@ -39,14 +39,21 @@ export default function NewGoalForm({ className }: Props) {
   });
 
   const onSubmit = async (values: FormValues) => {
-    try {
-      const newGoal = await createGoal(values.name, values.motivator, values.weekly_commitment);
-      addGoal(newGoal);
+      const { data, error } = await supabase.from("goals")
+      .insert({
+        name: values.name,
+        motivator: values.motivator,
+        weekly_commitment: values.weekly_commitment,
+        daily_commitment: values.daily_commitment,
+      })
+      .select("*")
+      .single();
+      if (error) {
+        console.error("Failed to create goal:", error);
+        // TODO: show error state
+      }
+      addGoal(data);
       reset();
-    } catch (error) {
-      console.error("Failed to create goal:", error);
-      // TODO: show error state
-    }
   };
 
   return (

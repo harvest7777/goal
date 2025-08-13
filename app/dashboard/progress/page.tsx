@@ -3,20 +3,14 @@
  */
 "use client";
 import { useState } from "react";
-import { useGoalStore } from "../stores/useGoalsStore";
 import { ChooseProgressDisplay } from "./_components/choose-display";
-import DisplayWeeklyProgress from "./_components/display-weekly-progress";
-import DisplayDailyProgress from "./_components/display-daily-progress";
 import { ChooseDay } from "./_components/choose-day";
+import DayProgressPage from "./_components/day-progress-page";
+import WeekProgressPage from "./_components/week-progress-page";
 
 export default function ProgressPage() {
-    const goals = useGoalStore((state) => state.goals);
     const [date, setDate] = useState<Date | undefined>(new Date()); 
     const [display, setDisplay] = useState<string>("day");
-
-    if (!goals || !date){
-        return null;
-    }
 
     return (
     <div className="flex flex-col items-center justify-center gap-5">
@@ -24,13 +18,11 @@ export default function ProgressPage() {
             <ChooseProgressDisplay display={display} setDisplay={setDisplay} /> 
             <ChooseDay date={date} setDate={setDate} />
         </div>
-        {display === "day" && 
-            <DisplayDailyProgress date={date} className="w-full" goalsToDisplay={goals} />
-        }
-        {
-            display === "week" && 
-            <DisplayWeeklyProgress className="w-full" goalsToDisplay={goals}/>
-        }
+
+        <DayProgressPage display={display} date={date} className="w-full" />
+
+
+        <WeekProgressPage display={display} date={date} className="w-full" />
     </div>
     )
 }
