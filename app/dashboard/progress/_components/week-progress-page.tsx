@@ -34,6 +34,7 @@ export default function WeekProgressPage({ date, display, className }: WeekProgr
                     <CardHeader>
                         <CardTitle className="flex justify-between">
                         <span className="w-3/5 line-clamp-1">{goal.name}</span>
+                        <span className="text-muted-foreground font-normal">{formatMinutesToHoursAndMinutes(goalData.goalToTotalMins[goal.id])}</span>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
