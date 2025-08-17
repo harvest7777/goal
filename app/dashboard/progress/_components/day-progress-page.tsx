@@ -5,38 +5,17 @@ import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CenteredSpinner from "@/components/ui/centered-spinner";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
-import { useEffect, useState } from "react";
-import supabase from "@/lib/supabase/supabase";
 
 interface DayProgressProps {
     date: Date | undefined;
     display: string;
     className?: string;
 }
-export default function DayProgressPage({ date, display, className }: DayProgressProps) {
-    const [goalsToRender, setGoalsToRender] = useState<Goal[] | null>(null);
-    useEffect(()=>{
-        if (!date) {
-            return;
-        }
-        const fetchWorkedOnGoals = async () => {
-            const startDate = new Date(date);
-            startDate.setHours(0, 0, 0, 0);
-            
-            const endDate = new Date(date);
-            endDate.setHours(23, 59, 59, 999);
-            const { data, error } = await supabase.rpc("get_goals_worked_on_from_time_range", {p_start_time: startDate, p_end_time: endDate});
-            if (error) {
-                console.error("Error fetching worked on goals:", error);
-                return;
-            }
-            setGoalsToRender(data);
-        };
-        fetchWorkedOnGoals();
-    },[date])
-    const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(goalsToRender, date);
 
-    if (!date || display !== "day" ||loading || !goalData || !goalsToRender) {
+export default function DayProgressPage({ date, display, className }: DayProgressProps) {
+    const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
+
+    if (!date || display !== "day" ||loading || !goalData) {
         return <CenteredSpinner />;
     }
 
@@ -45,7 +24,7 @@ export default function DayProgressPage({ date, display, className }: DayProgres
             <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</h2>
 
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
-            {goalsToRender!
+            {goalData.goalsToRender!
             .filter((goal) => goal.weekly_commitment !== null && goal.is_focused)
             .map((goal) => (
             <Card key={goal.id} className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>

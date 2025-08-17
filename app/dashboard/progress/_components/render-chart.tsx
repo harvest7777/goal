@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
 import {
   ChartConfig,
@@ -20,7 +21,7 @@ interface ChartProps  {
     className?: string;
 }
 
-export function RenderChart({chartData, chartConfig, target, total, formatX, formatY, className, tickX, tickY}: ChartProps) {
+function RenderChartComponent({chartData, chartConfig, target, total, formatX, formatY, className, tickX, tickY}: ChartProps) {
     const fillId = `fillValue-${new Date().getTime()}`;
   return (
     <ChartContainer className={`w-full ${className}`} config={chartConfig}>
@@ -85,3 +86,5 @@ export function RenderChart({chartData, chartConfig, target, total, formatX, for
     </ChartContainer>
   )
 }
+
+export const RenderChart = React.memo(RenderChartComponent);
