@@ -3,11 +3,12 @@ import { ChartConfig } from "@/components/ui/chart";
 import supabase from "@/lib/supabase/supabase";
 import { getISOWeek, getISOWeekYear, setISOWeek, startOfISOWeek } from 'date-fns';
 
-export function useWeeklyChartData(goals: Goal[]|null|undefined, date: Date| undefined) {
+export function useWeeklyChartData(date: Date| undefined) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
     const [goalData, setGoalData] = useState<{
+        goalsToRender: Goal[] | null,
         goalToChartData: Record<number, { x: number; value: number }[]>;
         goalToTargetMins: Record<number, number>;
         goalToTotalMins: Record<number, number>;
@@ -15,26 +16,35 @@ export function useWeeklyChartData(goals: Goal[]|null|undefined, date: Date| und
     } | null>(null);
     
     useEffect(()=>{
-        if (!goals || !date) {
+        if (!date) {
             return;
         }
         setError(null);
 
         const weekDayStart = getMondayOfISOWeek(getISOWeek(date), getISOWeekYear(date));
+
         const weekDayEnd= new Date(weekDayStart);
         weekDayEnd.setDate(weekDayEnd.getDate());
         weekDayEnd.setHours(23, 59, 59, 999);
+
         const weekEnd = new Date(weekDayEnd);
         weekEnd.setDate(weekEnd.getDate() + 6);
+
         try {
             const fetchData = async () => {
                 setLoading(true);
+
+                const { data: goals, error } = await supabase.rpc("get_goals_worked_on_from_time_range", {p_start_time: weekDayStart, p_end_time: weekEnd});
+                if (error) {
+                    console.error("Error fetching worked on goals:", error);
+                    return;
+                }
                 const goalToChartData = await getGoalToChartDatas(goals, weekDayStart, weekDayEnd);
                 const goalToTotalMins = await getGoalToTotalTime(goals, weekDayStart, weekEnd);
                 const goalToTargetMins = getGoalToMax(goals);
                 const totalMinsWorkingThisWeek = await getTotalTime(weekDayStart, weekEnd);
 
-                setGoalData({ goalToChartData, goalToTotalMins, goalToTargetMins, totalMinsWorkingThisWeek });
+                setGoalData({goalsToRender:goals, goalToChartData, goalToTotalMins, goalToTargetMins, totalMinsWorkingThisWeek });
                 setLoading(false);
             };
 
@@ -44,9 +54,9 @@ export function useWeeklyChartData(goals: Goal[]|null|undefined, date: Date| und
             setError("Error fetching day chart data.");
             setLoading(false);
         }
-    },[goals, date])
+    },[ date])
 
-    if (!goals || !date) {
+    if (!date) {
         return {
             goalData: null,
             chartConfig: null,
@@ -69,6 +79,7 @@ export function useWeeklyChartData(goals: Goal[]|null|undefined, date: Date| und
 
 const getGoalToChartDatas = async (goals: Goal[], weekDayStart: Date, weekDayEnd: Date) => {
     const currentDay = new Date();
+    const currentISODay = (currentDay.getDay()+6)%7;
     const isSameISOWeek = (date1: Date, date2: Date): boolean => {
         return (
             getISOWeek(date1) === getISOWeek(date2) &&
@@ -93,7 +104,7 @@ const getGoalToChartDatas = async (goals: Goal[], weekDayStart: Date, weekDayEnd
                 runningSum += d.day_time / 60000;
                 return {
                     x: index,
-                    value: (isSameISOWeek(currentDay, weekDayStart) && index > currentDay.getDay()+1) ? null : runningSum,
+                    value: isSameISOWeek(currentDay, weekDayStart) && index > currentISODay ? null : runningSum,
                 };
             });
 

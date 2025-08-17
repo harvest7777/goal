@@ -15,7 +15,10 @@ interface DayProgressProps {
 export default function DayProgressPage({ date, display, className }: DayProgressProps) {
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
 
-    if (!date || display !== "day" ||loading || !goalData) {
+    if (display !== "day") {
+        return null;
+    }
+    if (!date || loading || !goalData) {
         return <CenteredSpinner />;
     }
 

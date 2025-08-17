@@ -3,7 +3,6 @@
 import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CenteredSpinner from "@/components/ui/centered-spinner";
-import { useGoalStore } from "../../stores/useGoalsStore";
 import { useWeeklyChartData } from "../_hooks/useWeeklyChartData";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
 
@@ -13,21 +12,22 @@ interface WeekProgressPageProps {
     className?: string;
 }
 export default function WeekProgressPage({ date, display, className }: WeekProgressPageProps) {
-    const goals = useGoalStore((state) => state.goals);
-    const { goalData, chartConfig, loading, xFormatter, yFormatter } = useWeeklyChartData (goals, date);
-    if (!goals || !goalData || !date || display !== "week") {
+    const { goalData, chartConfig, loading, xFormatter, yFormatter } = useWeeklyChartData (date);
+
+    if (display !== "week") {
         return null;
-    }   
-    if (loading) {
+    }
+    if (!date || loading || !goalData) {
         return <CenteredSpinner />;
     }
+
     return (
         <div className={`${className} flex flex-col items-center justify-center gap-5`}>
             <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</h2>
 
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {
-                (goals!
+                (goalData.goalsToRender!
                     .filter((goal) => goal.weekly_commitment !== null && goal.is_focused)
                     .map((goal) => (
                     <Card key={goal.id} className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>
