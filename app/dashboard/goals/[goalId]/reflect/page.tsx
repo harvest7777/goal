@@ -10,7 +10,7 @@ export default function GoalReflections({
   params: Promise<{ goalId: string }>
 }) {
   const { goalId } = use(params)
-  const [reflections, setReflections] = useState<Reflection[] | null>(null);
+  const [reflections, setReflections] = useState<ReflectionOld[] | null>(null);
   useEffect(()=>{
     const init = async() => {
         const { data, error } = await supabase

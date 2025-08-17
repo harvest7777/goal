@@ -3,7 +3,6 @@
 import ExitGoal from "./_components/exit-goal";
 import HeyMessage from "./_components/hey-message";
 import PickGoal from "./_components/pick-goal";
-import ReflectionButton from "./_components/reflection-button";
 import SelectedGoal from "./_components/selected-goal";
 import Timer from "./_components/timer";
 import { useGoalStore } from "./stores/useGoalsStore";
@@ -22,7 +21,6 @@ export default function App() {
           <SelectedGoal />
           <Timer />
           <div className="flex gap-2">
-            <ReflectionButton/>
             <ExitGoal/>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import supabase from "@/lib/supabase/supabase";
-export const getReflectionsFromRange = async(startTime: string, endTime: string): Promise<Reflection[]> => {
+export const getReflectionsFromRange = async(startTime: string, endTime: string): Promise<ReflectionOld[]> => {
     const { data, error } = await supabase
         .from("reflections")
         .select("*")
@@ -9,9 +9,9 @@ export const getReflectionsFromRange = async(startTime: string, endTime: string)
         console.error("Error fetching reflections:", error);
         return [];
     }
-    return data as Reflection[];
+    return data as ReflectionOld[];
 }
-export const getReflections = async(): Promise<Reflection[]> => {
+export const getReflections = async(): Promise<ReflectionOld[]> => {
     const { data, error } = await supabase
         .from("reflections")
         .select("*")
@@ -20,5 +20,5 @@ export const getReflections = async(): Promise<Reflection[]> => {
         console.error("Error fetching reflections:", error);
         return [];
     }
-    return data as Reflection[];
+    return data as ReflectionOld[];
 }

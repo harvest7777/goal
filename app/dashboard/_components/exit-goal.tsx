@@ -12,7 +12,7 @@ export default function ExitGoal() {
         setSelectedGoal(null);
       }}
     >
-      leave
+      im done working for now
     </Button>
   );
 }

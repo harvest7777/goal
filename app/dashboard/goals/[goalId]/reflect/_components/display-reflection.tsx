@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
 interface DisplayReflectionProps {
-    reflection: Reflection;
+    reflection: ReflectionOld;
     className?: string;
 }
 export default function DisplayReflection({ reflection, className }: DisplayReflectionProps) {

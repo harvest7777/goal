@@ -13,7 +13,7 @@ export default function PickGoal({className}: props) {
         <h2>pick something to work towards</h2>
         {goals? (
             <div className="grid grid-cols-2 gap-4">
-            {goals.map((goal) => (
+            {goals.filter((goal)=>goal.is_focused).map((goal) => (
                 <GoalDisplayHeavy className="w-60" key={goal.id} goal={goal}/>
             ))}
             </div>

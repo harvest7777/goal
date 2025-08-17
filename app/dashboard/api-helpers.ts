@@ -28,7 +28,7 @@ export const createSession = async (goalId: number, startString: string, endStri
     return data as Session;
 }
 
-export const createReflection = async ( goalId: number, title: string, description: string): Promise<Reflection> => {
+export const createReflection = async ( goalId: number, title: string, description: string): Promise<ReflectionOld> => {
     const {data, error} = await supabase.from("reflections").insert(
       {
         goal_id: goalId,
@@ -43,5 +43,5 @@ export const createReflection = async ( goalId: number, title: string, descripti
         throw new Error(`Error creating reflection: ${error.message}`);
     }
 
-    return data as Reflection;
+    return data as ReflectionOld;
 }

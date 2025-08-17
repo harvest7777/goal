@@ -1,8 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { createSession } from "../api-helpers";
 import { useGoalStore } from "../stores/useGoalsStore";
+import supabase from "@/lib/supabase/supabase";
+import AfterLogSessionModal from "./after-log-session-modal";
 
 let originalTitle: string | undefined;
 
@@ -14,6 +15,8 @@ export default function Timer({ className }: props) {
   const [lastStart, setLastStart] = useState<number>(0);
   const [active, setActive] = useState<boolean>(false);
   const selectedGoal = useGoalStore((state) => state.selectedGoal);
+  const [newestSessionId, setNewestSessionId] = useState<number | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (!originalTitle) {
@@ -41,14 +44,10 @@ export default function Timer({ className }: props) {
       if (document.visibilityState === "visible") {
         setElapsed(elapsed);
       }
-      };
-    window.addEventListener("beforeunload", function (e) {
-      e.preventDefault(); // Required for some browsers
-    });
+    };
 
     return () => {
       worker.terminate();
-      window.removeEventListener("beforeunload", () => {});
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,11 +66,26 @@ export default function Timer({ className }: props) {
       }
       const startString = new Date(lastStart).toISOString();
       const endString = new Date(Date.now()).toISOString();
-      await createSession(
-         selectedGoal.id,
-         startString,
-         endString,
-      );
+
+      const {data: newlyCreatedSession, error} = await supabase
+        .from("sessions")
+        .insert({
+          goal_id: selectedGoal.id,
+          start_time: startString,
+          end_time: endString,
+        })
+        .select("*")
+        .single();
+
+      if (error) {
+        console.error("Failed to create session:", error);
+        return;
+      }
+
+      const sessionId = newlyCreatedSession.id;
+
+      setNewestSessionId(sessionId);
+      setOpenModal(true);
       setActive(false);
     } else {
       setActive(true);
@@ -92,6 +106,7 @@ export default function Timer({ className }: props) {
           reset
         </Button>
       </div>
+      {newestSessionId && <AfterLogSessionModal open={openModal} setOpen={setOpenModal} sessionId={newestSessionId} />}
     </div>
   );
 }

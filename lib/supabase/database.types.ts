@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -47,7 +47,65 @@ export type Database = {
         }
         Relationships: []
       }
+      outputs: {
+        Row: {
+          created_at: string
+          description: string
+          id: number
+          session_id: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: number
+          session_id: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: number
+          session_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outputs_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reflections: {
+        Row: {
+          created_at: string
+          description: string
+          id: number
+          session_id: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: number
+          session_id: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: number
+          session_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reflections_new_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reflections_old: {
         Row: {
           created_at: string
           description: string
@@ -116,33 +174,62 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_daily_time_over_range_of_days: {
+        Args: {
+          p_days: number
+          p_end_time: string
+          p_goal_id: number
+          p_start_time: string
+        }
+        Returns: {
+          day_time: number
+        }[]
+      }
       get_goal_owner: {
         Args: { goal_id: number }
         Returns: string
       }
+      get_hourly_time_over_range_of_hours: {
+        Args: { p_goal_id: number; p_hours: number; p_start_time: string }
+        Returns: {
+          day_time: number
+        }[]
+      }
       get_non_cutoff_total: {
-        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Args:
+          | { p_end_time: string; p_goal_id: number; p_start_time: string }
+          | { p_end_time: string; p_start_time: string }
         Returns: number
       }
       get_roll_into_new_day_total: {
-        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Args:
+          | { p_end_time: string; p_goal_id: number; p_start_time: string }
+          | { p_end_time: string; p_start_time: string }
         Returns: number
       }
       get_roll_out_of_day_total: {
-        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Args:
+          | { p_end_time: string; p_goal_id: number; p_start_time: string }
+          | { p_end_time: string; p_start_time: string }
         Returns: number
       }
+      get_session_owner: {
+        Args: { p_session_id: number }
+        Returns: string
+      }
       get_sessions_from_range: {
-        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Args: { p_end_time: string; p_goal_id: number; p_start_time: string }
         Returns: {
-          session_id: number
-          goal_id: number
-          start_time: string
           end_time: string
+          goal_id: number
+          session_id: number
+          start_time: string
         }[]
       }
       get_total_time_spent_from_range: {
-        Args: { p_goal_id: number; p_start_time: string; p_end_time: string }
+        Args:
+          | { p_end_time: string; p_goal_id: number; p_start_time: string }
+          | { p_end_time: string; p_start_time: string }
         Returns: number
       }
     }

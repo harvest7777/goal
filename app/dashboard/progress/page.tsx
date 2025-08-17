@@ -19,7 +19,7 @@ export default function ProgressPage() {
             <ChooseDay date={date} setDate={setDate} />
         </div>
 
-        <DayProgressPage display={display} date={date} className="w-full" />
+        <DayProgressPage  display={display} date={date} className="w-full" />
 
 
         <WeekProgressPage display={display} date={date} className="w-full" />
