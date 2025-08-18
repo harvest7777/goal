@@ -31,7 +31,7 @@ export default function ThoughtsTimeline({sessionData}: ThoughtsTimelineProps) {
     return (
         <div className="w-3/5 relative">
             {/* bar up to the curren titme */}
-            <div style={{width: `${percentOfDayPassed}%` }} className="rounded-l-full absolute h-1 bg-muted-foreground mt-1"/>
+            <div style={{width: `${percentOfDayPassed}%` }} className="rounded-l-full absolute h-1 bg-input mt-1"/>
             {/* bar for the rest of the day  */}
             <div style={{width: `${percentOfDayLeft}%`, marginLeft: `${percentOfDayPassed}%` }} className="absolute h-1 bg-muted mt-1"/>
             <div className="">

@@ -19,7 +19,7 @@ export default function TimelineBlob({
           tabIndex={0}
           aria-label="Open timeline item"
 
-          className="absolute h-3 w-3 rounded-full bg-muted ring-2 ring-muted-foreground shadow cursor-pointer hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+          className="absolute h-3 w-3 rounded-full bg-white ring-1 ring-input shadow cursor-pointer hover:cursor-pointer hover:scale-110 transition-transform duration-200"
           style={{ marginLeft: `calc(${leftPosition}% - 1.5rem)`,
           }}
           
