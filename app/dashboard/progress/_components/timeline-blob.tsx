@@ -1,16 +1,15 @@
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
 type TimelineBlobProps = {
   leftPosition: number; // percentage value for horizontal positioning
-  className?: string;   // optional extra classes for the blob
-  label?: string;       // popover text; defaults to "hi"
+  output?: string | null;
+  reflection?: string | null;
 };
 
 export default function TimelineBlob({
   leftPosition,
-  className,
-  label = "hi",
+  output = null,
+  reflection = null,
 }: TimelineBlobProps) {
   return (
     <Popover>
@@ -19,16 +18,27 @@ export default function TimelineBlob({
           role="button"
           tabIndex={0}
           aria-label="Open timeline item"
-          style={{ marginLeft: `calc(${leftPosition}% - 10px)` }}
-          className={cn(
-            "absolute h-5 w-5 rounded-full bg-green-500 ring-2 ring-white shadow cursor-pointer",
-            "focus:outline-none focus:ring-4 focus:ring-green-200",
-            className
-          )}
+
+          className="absolute h-3 w-3 rounded-full bg-muted ring-2 ring-muted-foreground shadow cursor-pointer hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+          style={{ marginLeft: `calc(${leftPosition}% - 1.5rem)`,
+          }}
+          
         />
       </PopoverTrigger>
-      <PopoverContent side="top" align="center" className="w-auto px-3 py-2 text-sm">
-        {label}
+      <PopoverContent side="top" align="center" className=" max-w-50 px-3 py-2 text-sm">
+        
+        {output && 
+        <div>
+          <h2>output</h2>
+          <p className="text-muted-foreground whitespace-pre-wrap">{output}</p>
+        </div>
+        }
+        {reflection && 
+        <div>
+          <h2>reflection</h2>
+          <p className="text-muted-foreground">{reflection}</p>
+        </div>
+        }
       </PopoverContent>
     </Popover>
   );

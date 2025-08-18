@@ -26,23 +26,22 @@ export default function ThoughtsTimeline({sessionData}: ThoughtsTimelineProps) {
         timelineArray[minuteOfDay] = session;
     });
 
+    const percentOfDayPassed = (new Date().getHours() * 60 + new Date().getMinutes())*100/minsInDay;
+    const percentOfDayLeft = 100 - percentOfDayPassed;
     return (
-        <div className="w-full">
-            <div className="h-10 w-[calc(100%)] bg-red-50 relative">
+        <div className="w-3/5 relative">
+            {/* bar up to the curren titme */}
+            <div style={{width: `${percentOfDayPassed}%` }} className="rounded-l-full absolute h-1 bg-muted-foreground mt-1"/>
+            {/* bar for the rest of the day  */}
+            <div style={{width: `${percentOfDayLeft}%`, marginLeft: `${percentOfDayPassed}%` }} className="absolute h-1 bg-muted mt-1"/>
+            <div className="">
                 {timelineArray.map((_, index) => {
                     if (timelineArray[index] !== null) {
                         const leftPosition = (index / minsInDay) * 100; // Calculate the left position as a percentage
-                        return <TimelineBlob key={index} leftPosition={leftPosition}/>
+                        return <TimelineBlob key={index} leftPosition={leftPosition} output={timelineArray[index].output_description} reflection={timelineArray[index].reflection_description} />;
                     }
                 })}
             </div>
-            {/* {sessionData.map((s) => (
-                <div key={s.session_id}>
-                    <h3>Session {s.session_id}</h3>
-                    <p>Output: {s.output_description}</p>
-                    <p>Reflection: {s.reflection_description}</p>
-                </div>
-            ))} */}
         </div>
     )
 
