@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { ChartConfig } from "@/components/ui/chart";
 import supabase from "@/lib/supabase/supabase";
 
+
 export function useDailyChartData(date: Date| undefined) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -85,10 +86,7 @@ const getGoalToChartDatas = async (goals: Goal[], startDate: Date) => {
     const now = new Date();
     const isSameDay = startDate.toDateString() === now.toDateString();
 
-    const shouldCutOff = (index: number) => {
-        if (index > 0) {
-            return 
-        }
+    const shouldCutOff = (index: number): boolean => {
         return isSameDay && index > now.getHours();
     }
     const goalToChartData = await Promise.all(

@@ -5,6 +5,8 @@ import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CenteredSpinner from "@/components/ui/centered-spinner";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
+import useDailyOutputsData from "../_hooks/useDailyOutputsData";
+import ThoughtsTimeline from "./thoughts-timeline";
 
 interface DayProgressProps {
     date: Date | undefined;
@@ -14,6 +16,7 @@ interface DayProgressProps {
 
 export default function DayProgressPage({ date, display, className }: DayProgressProps) {
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
+    const {sessionData} = useDailyOutputsData({ date });
 
     if (display !== "day") {
         return null;
@@ -21,11 +24,12 @@ export default function DayProgressPage({ date, display, className }: DayProgres
     if (!date || loading || !goalData) {
         return <CenteredSpinner />;
     }
+    console.log(sessionData);
 
     return (
         <div className={`${className} flex flex-col items-center justify-center gap-5`}>
             <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</h2>
-
+            <ThoughtsTimeline sessionData={sessionData}/>
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {goalData.goalsToRender!
             .filter((goal) => goal.weekly_commitment !== null && goal.is_focused)

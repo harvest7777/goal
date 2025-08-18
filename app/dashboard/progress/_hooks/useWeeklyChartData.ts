@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChartConfig } from "@/components/ui/chart";
 import supabase from "@/lib/supabase/supabase";
-import { getISOWeek, getISOWeekYear, setISOWeek, startOfISOWeek } from 'date-fns';
+import { startOfWeek } from 'date-fns';
 
 export function useWeeklyChartData(date: Date| undefined) {
     const [loading, setLoading] = useState(true);
@@ -21,7 +21,8 @@ export function useWeeklyChartData(date: Date| undefined) {
         }
         setError(null);
 
-        const weekDayStart = getMondayOfISOWeek(getISOWeek(date), getISOWeekYear(date));
+        const weekDayStart = startOfWeek(date, { weekStartsOn: 0 });
+        console.log("weekDayStart", weekDayStart);
 
         const weekDayEnd= new Date(weekDayStart);
         weekDayEnd.setDate(weekDayEnd.getDate());
@@ -79,13 +80,21 @@ export function useWeeklyChartData(date: Date| undefined) {
 
 const getGoalToChartDatas = async (goals: Goal[], weekDayStart: Date, weekDayEnd: Date) => {
     const currentDay = new Date();
-    const currentISODay = (currentDay.getDay()+6)%7;
-    const isSameISOWeek = (date1: Date, date2: Date): boolean => {
-        return (
-            getISOWeek(date1) === getISOWeek(date2) &&
-            getISOWeekYear(date1) === getISOWeekYear(date2)
-        );
+    const isSameWeek = (dayToTest: Date, weekDayStart: Date): boolean => {
+        const endOfWeek = new Date(weekDayStart);
+        endOfWeek.setDate(endOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+        return dayToTest >= weekDayStart && dayToTest <= endOfWeek;
+
     }
+    // We'll keep this here incase we want to switch basck to using ISO weeks in the future. 
+    // const currentISODay = (currentDay.getDay()+6)%7;
+    // const isSameISOWeek = (date1: Date, date2: Date): boolean => {
+    //     return (
+    //         getISOWeek(date1) === getISOWeek(date2) &&
+    //         getISOWeekYear(date1) === getISOWeekYear(date2)
+    //     );
+    // }
     const goalToChartData = await Promise.all(
         goals.map(async (goal) => {
             const { data, error } = await supabase.rpc('get_daily_time_over_range_of_days', {
@@ -104,7 +113,7 @@ const getGoalToChartDatas = async (goals: Goal[], weekDayStart: Date, weekDayEnd
                 runningSum += d.day_time / 60000;
                 return {
                     x: index,
-                    value: isSameISOWeek(currentDay, weekDayStart) && index > currentISODay ? null : runningSum,
+                    value: isSameWeek(currentDay, weekDayStart) && index > currentDay.getDay() ? null : runningSum,
                 };
             });
 
@@ -159,7 +168,7 @@ const getGoalToMax = (goals: Goal[]) => {
 }
 
 const formatDay = (day: number): string => {
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return days[day];
 };
 
@@ -174,8 +183,11 @@ value: {
 },
 } satisfies ChartConfig;
 
-const getMondayOfISOWeek = (week: number, year: number): Date => {
-  const jan4 = new Date(year, 0, 4); // Jan 4 is always in ISO week 1
-  const weekDate = setISOWeek(jan4, week);
-  return startOfISOWeek(weekDate); // Gets the Monday of that ISO week
-}
+
+// We're gonna keep this juse incase we decide to use ISO weeks again
+
+// const getMondayOfISOWeek = (week: number, year: number): Date => {
+//   const jan4 = new Date(year, 0, 4); // Jan 4 is always in ISO week 1
+//   const weekDate = setISOWeek(jan4, week);
+//   return startOfISOWeek(weekDate); // Gets the Monday of that ISO week
+// }
