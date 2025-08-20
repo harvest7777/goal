@@ -8,13 +8,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react";
+import { useDashboardStore } from "../../stores/useDashboardStore";
 
-interface ChooseDayProps {
-  date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
-}
-
-export function ChooseDay({ date, setDate }: ChooseDayProps) {
+export function ChooseDay() {
+  const date = useDashboardStore((state)=> state.date);
+  const setDate = useDashboardStore((state)=> state.setDate);
   let day = date?.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).toLowerCase();
   const [open, setOpen] = useState(false);
 
@@ -25,7 +23,7 @@ export function ChooseDay({ date, setDate }: ChooseDayProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline">{day}</Button>
+        <Button variant="sidebar">{day}</Button>
       </PopoverTrigger>
       <PopoverContent className="!p-0 !w-min">
       <Calendar

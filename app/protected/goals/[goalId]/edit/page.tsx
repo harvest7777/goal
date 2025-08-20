@@ -4,7 +4,7 @@
  */
 'use client'
 import { use} from 'react'
-import { useGoalStore } from '@/app/dashboard/stores/useGoalsStore'
+import { useGoalStore } from '@/app/protected/stores/useGoalsStore'
 import CenteredSpinner from '@/components/ui/centered-spinner'
 import EditGoalForm from './edit-goal-form'
  

@@ -1,7 +1,7 @@
 'use client'
 import supabase from '@/lib/supabase/supabase'
 import { use, useEffect, useState } from 'react'
-import DisplayReflection from '@/app/dashboard/goals/[goalId]/reflect/_components/display-reflection'
+import DisplayReflection from '@/app/protected/goals/[goalId]/reflect/_components/display-reflection'
 import CenteredSpinner from '@/components/ui/centered-spinner'
  
 export default function GoalReflections({

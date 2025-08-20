@@ -2,23 +2,28 @@
 
 import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import CenteredSpinner from "@/components/ui/centered-spinner";
 import { useWeeklyChartData } from "../_hooks/useWeeklyChartData";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
+import { useDashboardStore } from "../../stores/useDashboardStore";
+import Spinner from "@/components/ui/loading-spinner";
 
 interface WeekProgressPageProps {
-    date: Date | undefined;
     display: string;
     className?: string;
 }
-export default function WeekProgressPage({ date, display, className }: WeekProgressPageProps) {
+export default function WeekProgressPage({ display, className }: WeekProgressPageProps) {
+    const date = useDashboardStore((state) => state.date);
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useWeeklyChartData (date);
 
     if (display !== "week") {
         return null;
     }
     if (!date || loading || !goalData) {
-        return <CenteredSpinner />;
+        return (
+            <div className={`${className} flex flex-col items-center justify-center gap-5`}>
+                <Spinner/>
+            </div>
+        )
     }
 
     return (

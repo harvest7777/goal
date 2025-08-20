@@ -64,7 +64,7 @@ export async function updateSession(request: NextRequest) {
   ) {
     // user is logged in, redirect to the dashboard
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = "/protected";
     return NextResponse.redirect(url);
   }
 

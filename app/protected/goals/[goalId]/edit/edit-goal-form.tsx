@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useGoalStore } from "@/app/dashboard/stores/useGoalsStore";
+import { useGoalStore } from "@/app/protected/stores/useGoalsStore";
 import { GoalInput, goalSchema } from "@/app/schemas/goal";
 import supabase from "@/lib/supabase/supabase";
 
