@@ -33,7 +33,7 @@ export default function DayProgressPage({ className, display }: DayProgressProps
             <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</h2>
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {goalData.goalsToRender!
-            .filter((goal) => goal.weekly_commitment !== null && goal.is_focused)
+            .filter((goal) => goal.daily_commitment !== null)
             .map((goal) => (
             <Card key={goal.id} className={`w-80 ${!goal.is_focused && 'opacity-30'}`}>
             <CardHeader>

@@ -16,8 +16,8 @@ type DashboardStore = DashboardState & DashboardActions;
 export const useDashboardStore = create<DashboardStore>()(
   persist(
     (set) => ({
-      view: null,
-      date: undefined,
+      view: "day",
+      date: new Date(),
 
       setView: (view) => set({ view }),
       setDate: (date) => set({ date }),
