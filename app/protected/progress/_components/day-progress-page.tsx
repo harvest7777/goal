@@ -4,20 +4,23 @@ import { useDailyChartData } from "../_hooks/useDailyChartData";
 import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
-import { useDashboardStore } from "../../stores/useDashboardStore";
 import Spinner from "@/components/ui/loading-spinner";
+import useDailyOutputsData from "../_hooks/useDailyOutputsData";
+import { isToday } from "date-fns";
 
 interface DayProgressProps {
     display: string;
+    date: Date;
     className?: string;
 }
 
-export default function DayProgressPage({ className, display }: DayProgressProps) {
-    const date = useDashboardStore((state) => state.date);
+export default function DayProgressPage({ className, display, date }: DayProgressProps) {
+    const sessionData = useDailyOutputsData({date});
 
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
 
     if (display !== "day") {
+        console.log(display)
         return null;
     }
     if (!date || loading || !goalData) {
@@ -30,7 +33,11 @@ export default function DayProgressPage({ className, display }: DayProgressProps
 
     return (
         <div className={`${className} flex flex-col items-center justify-center gap-5`}>
-            <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</h2>
+            <h2>
+                <span>you spent </span>
+                <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</span>
+                <span> working {isToday(date) ? "today" : "on " + date.toLocaleDateString()}</span>
+            </h2>
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {goalData.goalsToRender!
             .filter((goal) => goal.daily_commitment !== null)

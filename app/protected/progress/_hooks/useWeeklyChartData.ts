@@ -22,7 +22,6 @@ export function useWeeklyChartData(date: Date| undefined) {
         setError(null);
 
         const weekDayStart = startOfWeek(date, { weekStartsOn: 0 });
-        console.log("weekDayStart", weekDayStart);
 
         const weekDayEnd= new Date(weekDayStart);
         weekDayEnd.setDate(weekDayEnd.getDate());

@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ChooseDay } from "./choose-day";
-import { ChooseProgressDisplay } from "./choose-display";
 
 interface SidebarProps {
     className?: string;
 }
 
 export default function Sidebar({ className }: SidebarProps) {
+    const changeQueryParams = (newParams: Record<string, string>) => {
+        const searchParams = new URLSearchParams(window.location.search);
+        Object.entries(newParams).forEach(([key, value]) => {
+            searchParams.set(key, value);
+        });
+        window.history.replaceState({}, "", `${window.location.pathname}?${searchParams}`);
+    };
     return (
-        <div className={`${className} flex flex-col items-start bg-muted rounded-lg`}>
-            <Link className="w-full" href="/protected/progress/timeline">
-                <Button variant={"sidebar"}>timeline</Button>
-            </Link>
-            <Link className="w-full" href="/protected/progress/graph">
-                <Button variant={"sidebar"}>graphical view</Button>
-            </Link>
+        <div className={`${className} flex flex-col items-start border-r-2 border-muted`}>
+            <Button variant={"sidebar"} onClick={() => changeQueryParams({ view: "day" })}>day view</Button>
+            <Button variant={"sidebar"} onClick={() => changeQueryParams({ view: "week" })}>week view</Button>
             <ChooseDay />
-            <ChooseProgressDisplay/>
         </div>
 
     )

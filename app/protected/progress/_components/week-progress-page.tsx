@@ -4,15 +4,15 @@ import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWeeklyChartData } from "../_hooks/useWeeklyChartData";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
-import { useDashboardStore } from "../../stores/useDashboardStore";
 import Spinner from "@/components/ui/loading-spinner";
+import { format, isThisWeek } from "date-fns";
 
 interface WeekProgressPageProps {
     display: string;
+    date: Date;
     className?: string;
 }
-export default function WeekProgressPage({ display, className }: WeekProgressPageProps) {
-    const date = useDashboardStore((state) => state.date);
+export default function WeekProgressPage({ display, className, date }: WeekProgressPageProps) {
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useWeeklyChartData (date);
 
     if (display !== "week") {
@@ -28,7 +28,11 @@ export default function WeekProgressPage({ display, className }: WeekProgressPag
 
     return (
         <div className={`${className} flex flex-col items-center justify-center gap-5`}>
-            <h2>{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</h2>
+            <h2>
+                <span>you spent </span>
+                <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</span>
+                <span> working {isThisWeek(date) ? "this week" : "the week of " + format(date, "MMMM do")}</span>
+            </h2>
 
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {

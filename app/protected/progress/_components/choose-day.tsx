@@ -8,13 +8,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useState } from "react";
-import { useDashboardStore } from "../../stores/useDashboardStore";
+import { useSearchParams } from "next/navigation";
 
 export function ChooseDay() {
-  const date = useDashboardStore((state)=> state.date);
-  const setDate = useDashboardStore((state)=> state.setDate);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+  const date = new Date(searchParams.get("date") || "");
+
   let day = date?.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).toLowerCase();
-  const [open, setOpen] = useState(false);
 
   if (isToday(date)) {
     day = "today";
@@ -29,7 +31,7 @@ export function ChooseDay() {
       <Calendar
           mode="single"
           selected={date}
-          onSelect={(date) => {setDate(date); setOpen(false)}}
+          onSelect={(newDate) => {setSearchParamsDate(newDate ? newDate : date); setOpen(false)}}
           className="rounded-lg"
         />
       </PopoverContent>
@@ -46,4 +48,10 @@ const isToday = (someDate: Date | undefined): boolean => {
     someDate.getMonth() === today.getMonth() &&
     someDate.getFullYear() === today.getFullYear()
   );
+};
+
+const setSearchParamsDate = (date: Date) => {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set("date", date.toISOString());
+  window.history.replaceState({}, "", `${window.location.pathname}?${searchParams}`);
 };
