@@ -31,7 +31,7 @@ export default function WeekProgressPage({ display, className, date }: WeekProgr
             <h2>
                 <span>you spent </span>
                 <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</span>
-                <span> working {isThisWeek(date) ? "this week" : "the week of " + format(date, "MMMM do")}</span>
+                <span> working {isThisWeek(date) ? "this week" : "the week of " + format(date, "MMMM do").toLowerCase()}</span>
             </h2>
 
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>

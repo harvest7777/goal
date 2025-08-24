@@ -58,7 +58,7 @@ export function useDailyChartData(date: Date| undefined) {
 
 
     const memoizedXFormatter = useCallback((x: number) => formatHour(x), []);
-    const memoizedYFormatter = useCallback((y: number) => formatHour(y), []);
+    const memoizedYFormatter = useCallback((y: number) => formatMinutes(y), []);
 
 
     if (!date) {
@@ -172,3 +172,7 @@ value: {
     color: "hsl(var(--chart-2))"
 },
 } satisfies ChartConfig;
+
+const formatMinutes = (minutes: number): string => {
+    return minutes + "m";
+}

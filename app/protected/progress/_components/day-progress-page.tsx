@@ -5,8 +5,9 @@ import { RenderChart } from "./render-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMinutesToHoursAndMinutes } from "../api-helpers";
 import Spinner from "@/components/ui/loading-spinner";
+import { format, isToday } from "date-fns";
 import useDailyOutputsData from "../_hooks/useDailyOutputsData";
-import { isToday } from "date-fns";
+import ThoughtsTimeline from "./thoughts-timeline";
 
 interface DayProgressProps {
     display: string;
@@ -15,8 +16,7 @@ interface DayProgressProps {
 }
 
 export default function DayProgressPage({ className, display, date }: DayProgressProps) {
-    const sessionData = useDailyOutputsData({date});
-
+    const {sessionData} = useDailyOutputsData({ date });
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
 
     if (display !== "day") {
@@ -32,11 +32,11 @@ export default function DayProgressPage({ className, display, date }: DayProgres
     }
 
     return (
-        <div className={`${className} flex flex-col items-center justify-center gap-5`}>
+        <div className={`${className} w-full flex flex-col items-center justify-center gap-5`}>
             <h2>
                 <span>you spent </span>
                 <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisDay)}</span>
-                <span> working {isToday(date) ? "today" : "on " + date.toLocaleDateString()}</span>
+                <span> working {isToday(date) ? "today" : "on " + format(date, "MMMM do").toLowerCase()}</span>
             </h2>
             <div className={`flex flex-wrap gap-5 items-center align-middle justify-center`}>
             {goalData.goalsToRender!
@@ -64,6 +64,11 @@ export default function DayProgressPage({ className, display, date }: DayProgres
             </Card>
             ))}
             </div>
+            <div className="w-full">
+                <h2 className="text-center">these were your thoughts throughout the day</h2>
+                <ThoughtsTimeline className="mt-5" sessionData={sessionData}/>
+            </div>
+        
         </div>
     )
 }

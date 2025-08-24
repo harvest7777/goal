@@ -7,14 +7,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export function ChooseDay() {
+function ChooseDayContent() {
   const [open, setOpen] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
-  const date = new Date(searchParams.get("date") || "");
+  const paramDate = searchParams.get("date");
+  let date = new Date();
+
+  if (paramDate) {
+    date = new Date(paramDate);
+  }
 
   let day = date?.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).toLowerCase();
 
@@ -36,6 +41,14 @@ export function ChooseDay() {
         />
       </PopoverContent>
     </Popover>
+  )
+}
+
+export function ChooseDay() {
+  return (
+    <Suspense>
+      <ChooseDayContent />
+    </Suspense>
   )
 }
 

@@ -25,6 +25,7 @@ export default function GoalReflections({
         setReflections(data);
     }
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   if (!reflections) {

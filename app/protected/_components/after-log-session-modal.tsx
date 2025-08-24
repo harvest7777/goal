@@ -24,6 +24,7 @@ export default function AfterLogSessionModal({ open, setOpen, sessionId }: Outpu
       setOpen(false);
       setStep(1);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   return (

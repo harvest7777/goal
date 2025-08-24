@@ -6,7 +6,7 @@
 
 import CenteredSpinner from "@/components/ui/centered-spinner";
 import TimelineBlob from "./timeline-blob";
-import { useDashboardStore } from "@/app/protected/stores/useDashboardStore";
+import { useSearchParams } from "next/navigation";
 
 interface ThoughtsTimelineProps {
     sessionData: {
@@ -19,8 +19,13 @@ interface ThoughtsTimelineProps {
     className?: string;
 }
 export default function ThoughtsTimeline({sessionData, vertical=false, className}: ThoughtsTimelineProps) {
-    const date = useDashboardStore((state)=>state.date);
+    const searchParams = useSearchParams();
+    const paramDate = searchParams.get("date");
+    let date = new Date();
 
+    if (paramDate) {
+        date = new Date(paramDate);
+    }
     if (!sessionData || !date) {
         return <CenteredSpinner/>
     }

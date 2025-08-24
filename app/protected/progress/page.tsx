@@ -5,16 +5,30 @@
 import { useSearchParams } from "next/navigation";
 import WeekProgressPage from "./_components/week-progress-page";
 import DayProgressPage from "./_components/day-progress-page";
+import { Suspense } from "react";
 
-export default function ProgressPage() {
+function ProgrssPageContent() {
     const searchParams = useSearchParams();
     const view = searchParams.get("view") || "day";
-    const date = new Date(searchParams.get("date") || "");
+    const paramDate = searchParams.get("date");
+    let date = new Date();
+
+    if (paramDate) {
+        date = new Date(paramDate);
+    }
 
     return (
-    <div>
-        <DayProgressPage display={view} date={date}/>
-        <WeekProgressPage display={view} date={date}/>
-    </div>
+        <div>
+            <DayProgressPage display={view} date={date}/>
+            <WeekProgressPage display={view} date={date}/>
+        </div>
+    )
+}
+
+export default function ProgressPage() {
+    return (
+        <Suspense>
+            <ProgrssPageContent />
+        </Suspense>
     )
 }
