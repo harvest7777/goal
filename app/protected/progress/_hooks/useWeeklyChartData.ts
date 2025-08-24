@@ -112,7 +112,7 @@ const getGoalToChartDatas = async (goals: Goal[], weekDayStart: Date, weekDayEnd
                 runningSum += d.day_time / 60000;
                 return {
                     x: index,
-                    value: isSameWeek(currentDay, weekDayStart) && index > currentDay.getDay() ? null : runningSum,
+                    value: (isSameWeek(currentDay, weekDayStart) && index > currentDay.getDay()+1) ? null : runningSum,
                 };
             });
 
