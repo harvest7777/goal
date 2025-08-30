@@ -42,7 +42,7 @@ export default function ThoughtsTimeline({sessionData, vertical=false, className
     }
     const percentOfDayLeft = 100 - percentOfDayPassed;
     return (
-        <div className={`relative h-[calc(100vh-56px)] ${className}`}>
+        <div className={`relative ${vertical ? 'h-[calc(100vh-56px)]' : 'w-full'} ${className}`}>
             {/* bar up to the current time */}
 
             <div style={vertical? {height: `${percentOfDayPassed}%`} : {width: `${percentOfDayPassed}%` }} className={`rounded-l-full absolute ${vertical? 'w-1': 'h-1'} bg-input`}/>

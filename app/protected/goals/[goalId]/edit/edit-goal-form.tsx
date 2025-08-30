@@ -77,9 +77,9 @@ export default function EditGoalForm({ className, goal }: Props) {
             )}
         </div>
 
-        {/* weekly hour commitment */}
+        {/* weekly minute commitment */}
         <div>
-            <label className="block text-sm font-medium mb-1">weekly hour commitment</label>
+            <label className="block text-sm font-medium mb-1">weekly minute commitment</label>
             <Input
             type="number"
             placeholder="0"
@@ -90,9 +90,9 @@ export default function EditGoalForm({ className, goal }: Props) {
             )}
         </div>
 
-        {/* daily time commitment */}
+        {/* daily minute commitment */}
         <div>
-            <label className="block text-sm font-medium mb-1">dailycommitment</label>
+            <label className="block text-sm font-medium mb-1">daily minute commitment</label>
             <Input
             type="number"
             placeholder="0"

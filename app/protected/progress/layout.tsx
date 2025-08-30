@@ -9,7 +9,7 @@ export default function AppLayout({
 
   return (
       <div className="flex">
-        <Sidebar className="w-64 h-[calc(100vh)] sticky top-0"/>
+        <Sidebar className="w-64 h-[calc(100vh-56px)] sticky top-14"/>
         <div className="flex-1 p-5">
           {children}
         </div>

@@ -87,7 +87,7 @@ const getGoalToChartDatas = async (goals: Goal[], startDate: Date) => {
     const isSameDay = startDate.toDateString() === now.toDateString();
 
     const shouldCutOff = (index: number): boolean => {
-        return isSameDay && index > now.getHours();
+        return isSameDay && index > now.getHours()+1;
     }
     const goalToChartData = await Promise.all(
         goals.map(async (goal) => {

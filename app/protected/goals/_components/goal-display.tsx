@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { MdOutlineEdit } from "react-icons/md";
-import { TfiThought } from "react-icons/tfi";
 import ToggleFocusButton from "./toggle-focus-button";
 
 interface GoalDisplayProps {
@@ -16,10 +15,6 @@ export default function GoalDisplay({ goal, className }: GoalDisplayProps) {
                 <Link className="text-sm text-muted-foreground flex gap-1 items-center align-middle justify-center" href={`goals/${goal.id}/edit`}>
                     <MdOutlineEdit />
                     edit
-                </Link>
-                <Link className="text-sm text-muted-foreground flex gap-1 items-center align-middle justify-center" href={`goals/${goal.id}/reflect`}>
-                    <TfiThought />
-                    reflections 
                 </Link>
                 <ToggleFocusButton goal={goal}/>
             </div>

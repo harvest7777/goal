@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { getUserUUID } from "../../api-helpers";
 import { useGoalStore } from "../../stores/useGoalsStore";
 import supabase from "@/lib/supabase/supabase";
 
@@ -39,8 +40,11 @@ export default function NewGoalForm({ className }: Props) {
   });
 
   const onSubmit = async (values: FormValues) => {
+
+      const userUUID = await getUserUUID();
       const { data, error } = await supabase.from("goals")
       .insert({
+        owner: userUUID,
         name: values.name,
         motivator: values.motivator,
         weekly_commitment: values.weekly_commitment,
@@ -81,9 +85,9 @@ export default function NewGoalForm({ className }: Props) {
         )}
       </div>
 
-      {/* weekly hour commitment */}
+      {/* weekly minute commitment */}
       <div>
-        <label className="block text-sm font-medium mb-1">weekly hour commitment</label>
+        <label className="block text-sm font-medium mb-1">weekly minute commitment</label>
         <Input
           type="number"
           placeholder="0"
@@ -94,9 +98,9 @@ export default function NewGoalForm({ className }: Props) {
         )}
       </div>
 
-      {/* daily time commitment */}
+      {/* daily minute commitment */}
       <div>
-        <label className="block text-sm font-medium mb-1">dailycommitment</label>
+        <label className="block text-sm font-medium mb-1">daily minute commitment</label>
         <Input
           type="number"
           placeholder="0"
