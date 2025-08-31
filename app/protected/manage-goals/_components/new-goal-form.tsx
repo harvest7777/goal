@@ -13,8 +13,6 @@ import supabase from "@/lib/supabase/supabase";
 const formSchema = z.object({
   name: z.string().min(1, { message: "goal name is required" }),
   motivator: z.string().nullable(),
-  daily_commitment: z.number().min(1, { message: "daily commitment must be at least 1 minute" }),
-  weekly_commitment: z.number().min(1, { message: "c'mon... you can commit more than that!" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -47,8 +45,6 @@ export default function NewGoalForm({ className }: Props) {
         owner: userUUID,
         name: values.name,
         motivator: values.motivator,
-        weekly_commitment: values.weekly_commitment,
-        daily_commitment: values.daily_commitment,
       })
       .select("*")
       .single();
@@ -82,32 +78,6 @@ export default function NewGoalForm({ className }: Props) {
         />
         {isSubmitted && errors.motivator && (
           <p className="text-red-500 text-sm">{errors.motivator.message}</p>
-        )}
-      </div>
-
-      {/* weekly minute commitment */}
-      <div>
-        <label className="block text-sm font-medium mb-1">weekly minute commitment</label>
-        <Input
-          type="number"
-          placeholder="0"
-          {...register("weekly_commitment", { valueAsNumber: true })}
-        />
-        {isSubmitted && errors.weekly_commitment && (
-          <p className="text-red-500 text-sm">{errors.weekly_commitment.message}</p>
-        )}
-      </div>
-
-      {/* daily minute commitment */}
-      <div>
-        <label className="block text-sm font-medium mb-1">daily minute commitment</label>
-        <Input
-          type="number"
-          placeholder="0"
-          {...register("daily_commitment", { valueAsNumber: true })}
-        />
-        {isSubmitted && errors.daily_commitment && (
-          <p className="text-red-500 text-sm">{errors.daily_commitment.message}</p>
         )}
       </div>
       {/* submit button */}

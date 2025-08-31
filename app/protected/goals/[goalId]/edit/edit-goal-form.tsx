@@ -27,8 +27,6 @@ export default function EditGoalForm({ className, goal }: Props) {
             defaultValues: {
                 name: goal.name,
                 motivator: goal.motivator || "",
-                daily_commitment: goal.daily_commitment || 0,
-                weekly_commitment: goal.weekly_commitment || 0,
             },
         });
 
@@ -47,8 +45,6 @@ export default function EditGoalForm({ className, goal }: Props) {
         reset({
         name: data.name,
         motivator: data.motivator ?? "",
-        daily_commitment: data.daily_commitment ?? 0,
-        weekly_commitment: data.weekly_commitment ?? 0,
         });
     };
 
@@ -74,32 +70,6 @@ export default function EditGoalForm({ className, goal }: Props) {
             />
             {isSubmitted && errors.motivator && (
             <p className="text-red-500 text-sm">{errors.motivator.message}</p>
-            )}
-        </div>
-
-        {/* weekly minute commitment */}
-        <div>
-            <label className="block text-sm font-medium mb-1">weekly minute commitment</label>
-            <Input
-            type="number"
-            placeholder="0"
-            {...register("weekly_commitment", { valueAsNumber: true })}
-            />
-            {isSubmitted && errors.weekly_commitment && (
-            <p className="text-red-500 text-sm">{errors.weekly_commitment.message}</p>
-            )}
-        </div>
-
-        {/* daily minute commitment */}
-        <div>
-            <label className="block text-sm font-medium mb-1">daily minute commitment</label>
-            <Input
-            type="number"
-            placeholder="0"
-            {...register("daily_commitment", { valueAsNumber: true })}
-            />
-            {isSubmitted && errors.daily_commitment && (
-            <p className="text-red-500 text-sm">{errors.daily_commitment.message}</p>
             )}
         </div>
         {/* submit button */}

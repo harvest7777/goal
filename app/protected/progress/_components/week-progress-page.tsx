@@ -29,8 +29,10 @@ export default function WeekProgressPage({ display, className, date }: WeekProgr
 
     return (
         <div className={`${className} flex flex-col items-center justify-center gap-5`}>
+
+            <BorderWrapper className="w-full flex flex-col items-center align-middle justify-center">
             {goalData.totalMinsWorkingThisWeek > 0? (
-                <BorderWrapper className="w-full flex flex-col items-center align-middle justify-center">
+                <div>
                 <h2 className="text-center">
                     <span>you spent </span>
                     <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</span>
@@ -64,10 +66,11 @@ export default function WeekProgressPage({ display, className, date }: WeekProgr
                         </Card>
                 )))}
                 </div>
-                </BorderWrapper>
+                </div>
             ):(
                 <p className="w-full text-center">no goal data to show</p>
             )}
+            </BorderWrapper>
         </div>
     )
 }

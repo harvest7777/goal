@@ -5,8 +5,8 @@ export default function Navbar() {
 
             <Link href="/" className="hover:font-semibold">hahahah 🍃</Link>
             <div className="flex space-x-8">
-                <Link href="/protected/goals" className="hover:font-semibold">goals</Link>
-                <Link href="/protected/progress?view=day" className="hover:font-semibold">progress</Link>
+                <Link href="/protected/goals" className="hover:font-semibold">investments</Link>
+                <Link href="/protected/progress?view=day" className="hover:font-semibold">stats</Link>
             </div>
         </nav>
     )
