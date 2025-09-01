@@ -15,9 +15,9 @@ interface OutputModalProps {
 
 export default function AfterLogSessionModal({ open, setOpen, sessionId }: OutputModalProps) {
   const [step, setStep] = useState(1);
-  const stepToForm: Record<number, JSX.Element> = {
-    1: <OutputForm sessionId={sessionId} doAfterSubmit={() => setStep((prev) => prev+1)} />,
-    2: <ReflectionForm sessionId={sessionId} doAfterSubmit={() => setStep((prev) => prev+1)} />,
+  const stepToForm: Record<number, { title: string; content: JSX.Element }> = {
+    1: { title: "output", content: <OutputForm sessionId={sessionId} nextStep={() => setStep((prev) => prev+1)} /> },
+    2: { title: "reflection", content: <ReflectionForm sessionId={sessionId} nextStep={() => setStep((prev) => prev+1)} /> },
   }
   useEffect(() => {
     if (step > Object.keys(stepToForm).length) {
@@ -30,8 +30,8 @@ export default function AfterLogSessionModal({ open, setOpen, sessionId }: Outpu
   return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="">
-          <DialogTitle>post session thoughts</DialogTitle>
-          {stepToForm[step]}
+          <DialogTitle>{stepToForm[step]?.title}</DialogTitle>
+          {stepToForm[step]?.content}
         </DialogContent>
       </Dialog>
     )

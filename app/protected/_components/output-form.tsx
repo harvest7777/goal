@@ -14,9 +14,9 @@ type FormValues = z.infer<typeof formSchema>;
 interface OutputFormProps {
     sessionId: number;
     className?: string;
-    doAfterSubmit?: () => void;
+    nextStep ?: () => void;
 }
-export default function OutputForm({ sessionId, className, doAfterSubmit }: OutputFormProps) {
+export default function OutputForm({ sessionId, className, nextStep }: OutputFormProps) {
   const onSubmit = async (values: FormValues) => {
       await supabase
         .from("outputs")
@@ -25,7 +25,7 @@ export default function OutputForm({ sessionId, className, doAfterSubmit }: Outp
           description: values.description,
         });
       reset();
-      doAfterSubmit?.();
+      nextStep?.();
   };
 
   const {
@@ -41,7 +41,6 @@ export default function OutputForm({ sessionId, className, doAfterSubmit }: Outp
         <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 ${className}`}>
         {/* reflection description */}
         <div>
-            <label className="block text-sm font-medium mb-1">what was the output of this session?</label>
             <Textarea
             className="resize-none"
             placeholder="i did...."
@@ -54,6 +53,9 @@ export default function OutputForm({ sessionId, className, doAfterSubmit }: Outp
         {/* submit button */}
         <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? "submitting..." : "submit"}
+        </Button>
+        <Button type="button" onClick={nextStep} variant={"destructive"} disabled={isSubmitting} className="w-full">
+          skip output &lt;/3
         </Button>
         </form>
     )
