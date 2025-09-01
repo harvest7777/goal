@@ -4,7 +4,7 @@ export default function ManageGoalsPage() {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-10">
       <div className="w-1/3">
-        <h1>define a goal</h1>
+        <h1 className="w-full text-center">commit to something new</h1>
         <NewGoalForm className="w-full"/>
       </div>
     </div>

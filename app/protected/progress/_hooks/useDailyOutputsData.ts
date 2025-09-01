@@ -12,6 +12,7 @@ export default function useDailyOutputsData({date}: useDailyOutputsDataProps) {
         output_description: string | null;
         reflection_description: string | null;
     }[] | null>(null);
+    console.log(sessionData)
 
     useEffect(()=>{
         if (!date) {

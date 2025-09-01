@@ -60,8 +60,8 @@ export default function NewGoalForm({ className }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className={`space-y-4 ${className}`}>
       {/* goal name */}
       <div>
-        <label className="block text-sm font-medium mb-1">goal name</label>
-        <Input placeholder="get an internship" {...register("name")} />
+        <label className="block text-sm font-medium mb-1">title</label>
+        <Input placeholder="what are you investing time into?" {...register("name")} />
         {isSubmitted && errors.name && (
           <p className="text-red-500 text-sm">{errors.name.message}</p>
         )}
@@ -70,10 +70,9 @@ export default function NewGoalForm({ className }: Props) {
       {/* motivator */}
       <div>
         <label className="block text-sm font-medium mb-1">motivator</label>
-        <p className="text-sm text-gray-500 mb-2">why do you want this?</p>
         <Textarea
           className="resize-none"
-          placeholder="those who write their motivators are more likely to accomplish their goals"
+          placeholder="sometimes, we need to remind ourselves why we are doing something"
           {...register("motivator")}
         />
         {isSubmitted && errors.motivator && (
