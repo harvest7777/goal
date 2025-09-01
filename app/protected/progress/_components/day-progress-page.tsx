@@ -23,6 +23,7 @@ export default function DayProgressPage({ className, display, date }: DayProgres
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
     const [totalDayData, setTotalDayData] = useState<{x: number, value: number}[]|null>(null);
 
+    console.log(sessionData);
     useEffect(()=>{
         const init = async() => {
             const startDate = new Date(date);
