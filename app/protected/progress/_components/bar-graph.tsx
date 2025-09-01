@@ -23,11 +23,13 @@ interface ChartProps  {
 export function BarGraph({ chartData, chartConfig, formatX, formatY, tickX, tickY, className }: ChartProps) {
   return (
         <ChartContainer className={`w-full ${className}`} config={chartConfig}>
-          <BarChart accessibilityLayer  data={chartData}         
-          margin={{
-            left: -25,
-            right: 0,
-          }}>
+          <BarChart 
+            accessibilityLayer  
+            data={chartData} 
+            margin={{
+              left: -25,
+              right: 0,
+            }}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="x"

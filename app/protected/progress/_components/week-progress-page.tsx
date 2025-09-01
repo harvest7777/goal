@@ -33,7 +33,7 @@ export default function WeekProgressPage({ display, className, date }: WeekProgr
             <BorderWrapper className="w-full flex flex-col items-center align-middle justify-center">
             {goalData.totalMinsWorkingThisWeek > 0? (
                 <div>
-                <h2 className="text-center">
+                <h2 className="w-full">
                     <span>you spent </span>
                     <span className="font-bold">{formatMinutesToHoursAndMinutes(goalData.totalMinsWorkingThisWeek)}</span>
                     <span> working {isThisWeek(date) ? "this week" : "the week of " + format(date, "MMMM do").toLowerCase()}</span>
