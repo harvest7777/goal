@@ -50,6 +50,7 @@ export default function ReflectionForm({ sessionId, className, nextStep }: Refle
         <div>
             <Textarea
             className="resize-none"
+            defaultValue={randomReflectionMessage}
             placeholder={randomReflectionMessage}
             {...register("description")}
             />

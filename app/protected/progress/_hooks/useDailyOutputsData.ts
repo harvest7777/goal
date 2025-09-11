@@ -11,6 +11,7 @@ export default function useDailyOutputsData({date}: useDailyOutputsDataProps) {
         session_end: Date;
         output_description: string | null;
         reflection_description: string | null;
+        goal_name: string | null;
     }[] | null>(null);
 
     useEffect(()=>{

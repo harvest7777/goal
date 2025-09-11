@@ -11,6 +11,7 @@ import BorderWrapper from "@/components/ui/border-wrapper";
 import { BarGraph } from "./bar-graph";
 import { useEffect, useState } from "react";
 import supabase from "@/lib/supabase/supabase";
+import { AllReflectionsModalButton } from "./all-reflections-modal";
 
 interface DayProgressProps {
     display: string;
@@ -66,7 +67,10 @@ export default function DayProgressPage({ className, display, date }: DayProgres
             <BorderWrapper className="w-full">
                 {sessionData.length > 0? (
                     <div>
-                        <h2 className="text-left w-full">thoughts and reflections</h2>
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-left">thoughts and reflections</h2>
+                            <AllReflectionsModalButton sessionData={sessionData} />
+                        </div>
                         <ThoughtsTimeline className="mt-5" sessionData={sessionData}/>
                     </div>
                 ):(

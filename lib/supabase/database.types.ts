@@ -23,7 +23,7 @@ export type Database = {
           motivator: string | null
           name: string
           owner: string | null
-          weekly_commitment: number
+          weekly_commitment: number | null
         }
         Insert: {
           created_at?: string
@@ -33,7 +33,7 @@ export type Database = {
           motivator?: string | null
           name: string
           owner?: string | null
-          weekly_commitment: number
+          weekly_commitment?: number | null
         }
         Update: {
           created_at?: string
@@ -43,7 +43,7 @@ export type Database = {
           motivator?: string | null
           name?: string
           owner?: string | null
-          weekly_commitment?: number
+          weekly_commitment?: number | null
         }
         Relationships: []
       }
@@ -189,8 +189,23 @@ export type Database = {
         Args: { goal_id: number }
         Returns: string
       }
+      get_goals_worked_on_from_time_range: {
+        Args: { "": number } | { p_end_time: string; p_start_time: string }
+        Returns: {
+          created_at: string
+          daily_commitment: number | null
+          id: number
+          is_focused: boolean
+          motivator: string | null
+          name: string
+          owner: string | null
+          weekly_commitment: number | null
+        }[]
+      }
       get_hourly_time_over_range_of_hours: {
-        Args: { p_goal_id: number; p_hours: number; p_start_time: string }
+        Args:
+          | { p_goal_id: number; p_hours: number; p_start_time: string }
+          | { p_hours: number; p_start_time: string }
         Returns: {
           day_time: number
         }[]
@@ -212,6 +227,17 @@ export type Database = {
           | { p_end_time: string; p_goal_id: number; p_start_time: string }
           | { p_end_time: string; p_start_time: string }
         Returns: number
+      }
+      get_session_data_from_time_range: {
+        Args: { p_end_time: string; p_start_time: string }
+        Returns: {
+          goal_id: number
+          goal_name: string
+          output_description: string
+          reflection_description: string
+          session_end: string
+          session_id: number
+        }[]
       }
       get_session_owner: {
         Args: { p_session_id: number }
