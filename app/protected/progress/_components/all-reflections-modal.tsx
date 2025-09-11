@@ -32,21 +32,24 @@ export function AllReflectionsModalButton({ sessionData }: AllReflectionsModalPr
                 <ul className="max-h-full w-full overflow-y-auto flex flex-col mt-5">
                     {sessionData.filter((session) => session.goal_name !== null).map((session) => (
                     <li key={session.session_id} className="flex flex-col gap-2 border-b border-b-muted mb-5 pb-5">
-                        { session.goal_name && <div>
-                            <p className="text-muted-foreground">time investment: </p>
-                            <p>{session.goal_name}</p>
-                        </div>}
-                      {session.output_description &&
-                        <div>
-                            <p className="text-muted-foreground">output: </p>
-                            <p>{session.output_description}</p>
-                        </div>}
-                      {session.reflection_description &&
-                        <div>
-                            <p className="text-muted-foreground">reflection: </p>
-                            <p>{session.reflection_description}</p>
-                        </div>
-                    }
+                        {session.goal_name && (
+                          <div className="">
+                            <span className="text-muted-foreground">time investment: </span>
+                            <span>{session.goal_name}</span>
+                          </div>
+                        )}
+                        {session.output_description && (
+                          <div className="">
+                            <span className="text-muted-foreground">output: </span>
+                            <span>{session.output_description}</span>
+                          </div>
+                        )}
+                        {session.reflection_description && (
+                          <div className="">
+                            <span className="text-muted-foreground">reflection: </span>
+                            <span>{session.reflection_description}</span>
+                          </div>
+                        )}
                     </li>
                     ))}
                 </ul>
