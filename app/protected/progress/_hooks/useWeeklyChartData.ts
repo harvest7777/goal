@@ -159,9 +159,10 @@ const getGoalToMax = (goals: Goal[]) => {
     const goalToTargetMins = {} as Record<number, number>;
     goals.forEach(goal => {
         if (goal.weekly_commitment === null) {
-            throw new Error(`Goal ${goal.id} has no weekly commitment. Perhaps input data is bad?`);
-        }
-        goalToTargetMins[goal.id] = goal.weekly_commitment;
+            goalToTargetMins[goal.id] = 0;
+        } else {
+            goalToTargetMins[goal.id] = goal.weekly_commitment;
+}
     });
     return goalToTargetMins;
 }
