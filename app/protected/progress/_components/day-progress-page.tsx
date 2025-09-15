@@ -48,7 +48,7 @@ export default function DayProgressPage({ className, display, date }: DayProgres
             setTotalDayData(chartData);
         }
         init();
-    }, []);
+    }, [date]);
     if (display !== "day") {
         return null;
     }
