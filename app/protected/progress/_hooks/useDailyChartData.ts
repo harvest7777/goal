@@ -100,8 +100,6 @@ const getGoalToChartDatas = async (goals: Goal[], startDate: Date) => {
             if (error || !data) {
                 throw new Error("Failed to fetch hourly data");
             }
-            console.log("Hourly data for goal", data);
-
             // let runningSum = 0;
             const chartData = data.map((d: {  day_time: number }, index: number) => {
                 // runningSum += d.day_time / 60000;

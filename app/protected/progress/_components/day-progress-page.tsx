@@ -24,7 +24,6 @@ export default function DayProgressPage({ className, display, date }: DayProgres
     const { goalData, chartConfig, loading, xFormatter, yFormatter } = useDailyChartData(date);
     const [totalDayData, setTotalDayData] = useState<{x: number, value: number}[]|null>(null);
 
-    console.log(sessionData);
     useEffect(()=>{
         const init = async() => {
             const startDate = new Date(date);
@@ -33,6 +32,7 @@ export default function DayProgressPage({ className, display, date }: DayProgres
                 p_hours: 24,
                 p_start_time: startDate.toISOString(),
             });
+            console.log(data)
             if (error) {
                 console.error("Error fetching hourly data:", error);
                 return;

@@ -55,7 +55,6 @@ export default function WeekProgressPage({ display, className, date }: WeekProgr
                             <RenderChart
                                 chartData={goalData.goalToChartData[goal.id]}
                                 chartConfig={chartConfig}
-                                target={goalData.goalToTargetMins[goal.id]}
                                 total={goalData.goalToTotalMins[goal.id]}
                                 formatX={xFormatter}
                                 formatY={yFormatter}

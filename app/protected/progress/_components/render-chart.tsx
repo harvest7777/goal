@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
@@ -12,7 +12,6 @@ import {
 interface ChartProps  {
     chartData: { x: number; value: number | null }[];
     chartConfig: ChartConfig;
-    target: number;
     total: number;
     formatX: (x: number) => string;
     formatY: (y: number) => string;
@@ -21,7 +20,7 @@ interface ChartProps  {
     className?: string;
 }
 
-function RenderChartComponent({chartData, chartConfig, target, total, formatX, formatY, className, tickX, tickY}: ChartProps) {
+function RenderChartComponent({chartData, chartConfig, formatX, formatY, className, tickX, tickY}: ChartProps) {
     const fillId = `fillValue-${new Date().getTime()}`;
   return (
     <ChartContainer className={`w-full ${className}`} config={chartConfig}>
@@ -49,16 +48,9 @@ function RenderChartComponent({chartData, chartConfig, target, total, formatX, f
             axisLine={false}
             tickMargin={8}
             tickCount={tickY}
-            domain={[0, total > target? "auto" : target]}
             tickFormatter={formatY}
         >
         </YAxis>
-        <ReferenceLine
-            y={target}
-            stroke="var(--color-value)"
-            strokeDasharray="4 4"
-            strokeWidth={1}
-        />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <defs>
             <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
