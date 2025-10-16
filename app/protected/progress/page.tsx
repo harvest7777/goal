@@ -8,27 +8,27 @@ import DayProgressPage from "./_components/day-progress-page";
 import { Suspense } from "react";
 
 function ProgrssPageContent() {
-    const searchParams = useSearchParams();
-    const view = searchParams.get("view") || "day";
-    const paramDate = searchParams.get("date");
-    let date = new Date();
+  const searchParams = useSearchParams();
+  const view = searchParams.get("view") || "day";
+  const paramDate = searchParams.get("date");
+  let date = new Date();
 
-    if (paramDate) {
-        date = new Date(paramDate);
-    }
+  if (paramDate) {
+    date = new Date(paramDate);
+  }
 
-    return (
-        <div>
-            <DayProgressPage display={view} date={date}/>
-            <WeekProgressPage display={view} date={date}/>
-        </div>
-    )
+  return (
+    <div>
+      <DayProgressPage display={view} date={date} />
+      <WeekProgressPage display={view} date={date} />
+    </div>
+  );
 }
 
 export default function ProgressPage() {
-    return (
-        <Suspense>
-            <ProgrssPageContent />
-        </Suspense>
-    )
+  return (
+    <Suspense>
+      <ProgrssPageContent />
+    </Suspense>
+  );
 }
