@@ -121,7 +121,7 @@ export default function DayProgressPage({
                 <div key={goal.id}>
                   <Card
                     key={goal.id}
-                    className={`w-full ${!goal.is_focused && "opacity-30"}`}
+                    className={` w-full ${!goal.is_focused && "opacity-30"}`}
                   >
                     <CardHeader>
                       <CardTitle className="flex justify-between">
