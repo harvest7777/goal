@@ -7,7 +7,7 @@ export default function GoogleSignIn() {
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/protected`,
       },
     });
   };
